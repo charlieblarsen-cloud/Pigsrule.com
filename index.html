@@ -8,7 +8,7 @@
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      padding: 20px;
+      padding: 30px 20px 60px;
       font-family: "Trebuchet MS", Arial, sans-serif;
       background: linear-gradient(135deg, #ffd6e7 0%, #f3d9ff 100%);
       min-height: 100vh;
@@ -18,13 +18,14 @@
       align-items: center;
       color: #3a1226;
     }
+    body.has-results { justify-content: flex-start; }
     header { text-align: center; margin-bottom: 24px; }
     .pig-icon { font-size: 72px; display: block; margin-bottom: 10px; }
     h1 { font-size: 48px; margin: 0; color: #b8296f; text-shadow: 2px 2px 0px #ffffff; }
     .subtitle { font-size: 16px; color: #6b244b; margin-top: 6px; font-weight: bold; }
     .search-container {
       width: 100%;
-      max-width: 720px;
+      max-width: 760px;
       background-color: #ffffff;
       padding: 22px;
       border-radius: 22px;
@@ -52,7 +53,42 @@
       border-radius: 14px;
       cursor: pointer;
     }
-    footer { position: fixed; bottom: 15px; font-size: 14px; color: #6b244b; }
+    #resultsArea {
+      width: 100%;
+      max-width: 760px;
+      margin-top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .result-card {
+      background-color: #ffffff;
+      padding: 18px 22px;
+      border-radius: 16px;
+      border: 3px solid #decaff;
+      box-shadow: 0 4px 12px rgba(184, 41, 111, 0.1);
+    }
+    .result-url { font-size: 13px; color: #923c99; margin-bottom: 4px; word-break: break-all; }
+    .result-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #b8296f;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 6px;
+    }
+    .result-title:hover { text-decoration: underline; }
+    .result-snippet { font-size: 15px; color: #3a1226; line-height: 1.45; margin: 0; }
+    .status-msg {
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold;
+      color: #6b244b;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 16px;
+    }
+    footer { margin-top: auto; padding-top: 30px; font-size: 14px; color: #6b244b; text-align: center; }
   </style>
 </head>
 <body>
@@ -64,15 +100,59 @@
   </header>
 
   <main class="search-container">
-    <form action="https://google.com" method="GET">
-      <input type="text" name="q" placeholder="Search the entire web..." autofocus required />
+    <form onsubmit="runSearch(event)">
+      <input type="text" id="searchInput" placeholder="Search anything on Pigsrule.com..." autofocus required />
       <button type="submit">🔍 Search</button>
     </form>
   </main>
 
+  <section id="resultsArea"></section>
+
   <footer>
     Powered by Pigsrule.com &bull; Made for fans of Doctor Who, Games &amp; Books
   </footer>
+
+  <script>
+    function showPigsruleResults(data) {
+      const resultsArea = document.getElementById('resultsArea');
+      const query = document.getElementById('searchInput').value.trim();
+
+      if (data.query && data.query.search && data.query.search.length > 0) {
+        let html = '';
+        data.query.search.forEach(item => {
+          const url = 'https://wikipedia.org' + encodeURIComponent(item.title.replace(/ /g, '_'));
+          const snippet = item.snippet.replace(/<\/?[^>]+(>|$)/g, '');
+          html += `
+            <div class="result-card">
+              <div class="result-url">${url}</div>
+              <a class="result-title" href="${url}" target="_blank" rel="noopener">${item.title}</a>
+              <p class="result-snippet">${snippet}...</p>
+            </div>
+          `;
+        });
+        resultsArea.innerHTML = html;
+      } else {
+        resultsArea.innerHTML = `<div class="status-msg">No matches found on Pigsrule.com for "${query}". Try another word!</div>`;
+      }
+    }
+
+    function runSearch(event) {
+      event.preventDefault();
+      const query = document.getElementById('searchInput').value.trim();
+      if (!query) return;
+
+      document.body.classList.add('has-results');
+      document.getElementById('resultsArea').innerHTML = '<div class="status-msg">🐷 Searching on Pigsrule.com...</div>';
+
+      const oldScript = document.getElementById('jsonpScript');
+      if (oldScript) oldScript.remove();
+
+      const script = document.createElement('script');
+      script.id = 'jsonpScript';
+      script.src = 'https://wikipedia.org' + encodeURIComponent(query) + '&srlimit=10&format=json&callback=showPigsruleResults';
+      document.body.appendChild(script);
+    }
+  </script>
 
 </body>
 </html>
