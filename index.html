@@ -55,19 +55,78 @@
 
     .search-container {
       width: 100%;
-      max-width: 750px;
+      max-width: 720px;
       background-color: #ffffff;
-      padding: 20px 25px;
-      border-radius: 20px;
+      padding: 24px;
+      border-radius: 22px;
       border: 4px solid #cc7a9f;
       box-shadow: 0 10px 25px rgba(184, 41, 111, 0.2);
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
 
-    .search-container > div {
+    .search-box {
+      display: flex;
+      gap: 10px;
       width: 100%;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 14px 18px;
+      font-size: 18px;
+      font-family: inherit;
+      border: 3px solid #decaff;
+      border-radius: 14px;
+      outline: none;
+      color: #3a1226;
+      background-color: #fffafd;
+    }
+
+    input[type="text"]:focus {
+      border-color: #b8296f;
+    }
+
+    button.search-btn {
+      padding: 14px 24px;
+      font-size: 18px;
+      font-weight: bold;
+      font-family: inherit;
+      background-color: #c78dcc;
+      color: #ffffff;
+      border: 3px solid #923c99;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    button.search-btn:hover {
+      background-color: #b8296f;
+      border-color: #7a1848;
+    }
+
+    .categories {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 16px;
+    }
+
+    .cat-btn {
+      padding: 6px 14px;
+      font-size: 14px;
+      font-weight: bold;
+      font-family: inherit;
+      border-radius: 20px;
+      border: 2px solid #cc7a9f;
+      background-color: #fff0f6;
+      color: #6b244b;
+      cursor: pointer;
+    }
+
+    .cat-btn.active {
+      background-color: #b8296f;
+      color: #ffffff;
+      border-color: #b8296f;
     }
 
     footer {
@@ -83,19 +142,58 @@
 
   <header>
     <span class="pig-icon">🐷</span>
-    <h1 translate="no"><span>Pigsrule</span><span>.com</span></h1>
-    <div class="subtitle">Searching Doctor Who, Video Games, Books &amp; Poki!</div>
+    <h1 translate="no"><span>P</span><span>i</span><span>g</span><span>s</span><span>r</span><span>u</span><span>l</span><span>e</span><span>.</span><span>c</span><span>o</span><span>m</span></h1>
+    <div class="subtitle">Searching Doctor Who, Video Games, Books, Poki &amp; More!</div>
   </header>
 
   <main class="search-container">
-    <!-- Your Custom Pigsrule.com Search Engine -->
-    <script async src="https://google.com"></script>
-    <div class="gcse-search"></div>
+    <form class="search-box" onsubmit="runSearch(event)">
+      <input type="text" id="searchInput" placeholder="Type anything to search..." autofocus required />
+      <button type="submit" class="search-btn">🔍 Search</button>
+    </form>
+
+    <div class="categories">
+      <button type="button" class="cat-btn active" onclick="setMode('curated', this)">Doctor Who, Games &amp; Books</button>
+      <button type="button" class="cat-btn" onclick="setMode('who', this)">Doctor Who Only</button>
+      <button type="button" class="cat-btn" onclick="setMode('games', this)">Games &amp; Poki</button>
+      <button type="button" class="cat-btn" onclick="setMode('books', this)">Books</button>
+      <button type="button" class="cat-btn" onclick="setMode('web', this)">Whole Web</button>
+    </div>
   </main>
 
   <footer>
     Powered by Pigsrule.com &bull; Made for fans of Doctor Who, Games &amp; Books
   </footer>
+
+  <script>
+    let currentMode = 'curated';
+
+    function setMode(mode, btn) {
+      currentMode = mode;
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function runSearch(event) {
+      event.preventDefault();
+      const query = document.getElementById('searchInput').value.trim();
+      if (!query) return;
+
+      let filter = '';
+      if (currentMode === 'curated') {
+        filter = ' (site:doctorwho.tv OR site:tardis.wiki OR site:ign.com OR site:poki.com OR site:goodreads.com OR site:fandom.com)';
+      } else if (currentMode === 'who') {
+        filter = ' (site:doctorwho.tv OR site:tardis.wiki OR site:bigfinish.com OR site:doctorwhonews.net)';
+      } else if (currentMode === 'games') {
+        filter = ' (site:poki.com OR site:ign.com OR site:gamespot.com OR site:steampowered.com OR site:nintendolife.com)';
+      } else if (currentMode === 'books') {
+        filter = ' (site:goodreads.com OR site:waterstones.com OR site:penguin.co.uk OR site:openlibrary.org)';
+      }
+
+      const finalQuery = encodeURIComponent(query + filter);
+      window.open('https://google.com' + finalQuery, '_blank');
+    }
+  </script>
 
 </body>
 </html>
