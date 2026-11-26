@@ -1,0 +1,77 @@
+const pigDatabase = [
+  { category: "Doctor Who", title: "Doctor Who Official Website", url: "https://doctorwho.tv", tags: "dr who doctor who drwho tardis dalek cybermen bbc sci fi", snippet: "Official home of Doctor Who! Episodes, Doctors, companions, and monsters." },
+  { category: "Doctor Who", title: "TARDIS Wiki", url: "https://tardis.wiki", tags: "dr who doctor who drwho tardis wiki lore dalek gallifrey", snippet: "Massive encyclopedia covering every Doctor Who episode, character, and alien." },
+  { category: "Doctor Who", title: "Big Finish Doctor Who Audio", url: "https://bigfinish.com", tags: "dr who doctor who audio stories big finish", snippet: "Full-cast Doctor Who audio adventures starring the original Doctors." },
+  { category: "Games & Poki", title: "Poki - Free Online Games", url: "https://poki.com", tags: "poki video games play online browser games free", snippet: "Play thousands of free online games instantly in your browser on Poki." },
+  { category: "Video Games", title: "IGN Gaming", url: "https://ign.com", tags: "video games ign reviews gaming nintendo playstation xbox pc", snippet: "Latest video game reviews, trailers, walkthroughs, and gaming news." },
+  { category: "Video Games", title: "Steam Store", url: "https://steampowered.com", tags: "steam pc video games gaming store", snippet: "Discover, play, and discuss thousands of PC video games." },
+  { category: "Video Games", title: "Nintendo Life", url: "https://nintendolife.com", tags: "nintendo switch video games mario zelda gaming", snippet: "Latest Nintendo Switch news, game reviews, and features." },
+  { category: "D&D", title: "D&D Beyond", url: "https://dndbeyond.com", tags: "d and d dandd d&d dnd dungeons and dragons character builder spells", snippet: "Official digital toolset and character builder for Dungeons & Dragons." },
+  { category: "D&D", title: "Roll20 Virtual Tabletop", url: "https://roll20.net", tags: "d and d dandd d&d dnd dungeons and dragons tabletop maps", snippet: "Play Dungeons & Dragons online with digital battle maps and dice rollers." },
+  { category: "All Animals", title: "National Geographic Animals", url: "https://nationalgeographic.com", tags: "all animals wildlife mammals birds reptiles ocean sharks pigs capybara", snippet: "Facts, photos, and habitats for every animal species on Earth." },
+  { category: "All Animals", title: "San Diego Zoo Animals", url: "https://sandiegozoo.org", tags: "all animals zoo wildlife mammals amphibians insects", snippet: "Huge encyclopedia of animals organized by species, habitat, and diet." },
+  { category: "All Animals", title: "Capybara Legends Lore", url: "#capybara-legends", tags: "all animals capybara legends goorglefellae spiderbara cookabaras tazz xame poshos", snippet: "The mythic saga of Goorglefellae, Spiderbara, the disco-loving Cookabaras, and Tazz Xame!" },
+  { category: "Comics", title: "Marvel Comics", url: "https://marvel.com", tags: "comics superheroes spider-man avengers x-men graphic novels", snippet: "Explore Marvel Comics characters, series, and graphic novels." },
+  { category: "Comics", title: "DC Comics", url: "https://dc.com", tags: "comics batman superman wonder woman graphic novels", snippet: "Discover DC Comics, graphic novels, and superhero universes." },
+  { category: "Comics", title: "WEBTOON Comics", url: "https://webtoons.com", tags: "comics webtoon manga graphic novels fantasy sci fi", snippet: "Read thousands of free creator-owned comics and manga online." },
+  { category: "Books", title: "Goodreads", url: "https://goodreads.com", tags: "books reading novels reviews fantasy sci fi goodreads", snippet: "Find your next favourite book, read reviews, and track your reading." },
+  { category: "Books", title: "Waterstones Books", url: "https://waterstones.com", tags: "books bookshop reading fiction fantasy waterstones", snippet: "Browse millions of books across fantasy, sci-fi, and adventure." },
+  { category: "Books", title: "Open Library", url: "https://openlibrary.org", tags: "books free library read online novels open library", snippet: "Digital library with millions of free books you can read online." },
+  { category: "Harry Potter", title: "Harry Potter Official", url: "https://harrypotter.com", tags: "harry potter harrypotter hogwarts wizarding world magic gryffindor slytherin", snippet: "Official home of Harry Potter and the Wizarding World." },
+  { category: "Harry Potter", title: "Harry Potter Wiki", url: "https://fandom.com", tags: "harry potter harrypotter wiki hogwarts spells characters potions", snippet: "Encyclopedia covering every spell, potion, and character in Harry Potter." },
+  { category: "Movies & TV Shows", title: "IMDb Movies & TV", url: "https://imdb.com", tags: "movies tv shows tvshows series actors trailers ratings", snippet: "Movie and TV show ratings, trailers, cast lists, and trivia." },
+  { category: "Movies & TV Shows", title: "Rotten Tomatoes", url: "https://rottentomatoes.com", tags: "movies tv shows tvshows reviews ratings cinema", snippet: "Check critic and audience scores for movies and TV series." },
+  { category: "School Subjects", title: "BBC Bitesize", url: "https://bbc.co.uk", tags: "all school subjects maths english science history geography computing revision", snippet: "Free study guides and quizzes for every school subject." },
+  { category: "School Subjects", title: "Khan Academy", url: "https://khanacademy.org", tags: "all school subjects math science computing history grammar", snippet: "Free lessons and practice in maths, science, computing, and history." },
+  { category: "Custom Maps", title: "Inkarnate Map Maker", url: "https://inkarnate.com", tags: "making custom maps fantasy worldbuilding map maker dnd", snippet: "Create custom fantasy world maps, continents, and battle maps." },
+  { category: "Custom Maps", title: "Azgaar Fantasy Map Generator", url: "https://github.io", tags: "making custom maps fantasy world generator kingdoms", snippet: "Free procedural fantasy world map generator." },
+  { category: "Creative Apps", title: "Adobe Creative Cloud", url: "https://adobe.com", tags: "creativity creative apps adobe photoshop illustrator premiere design", snippet: "Adobe apps for photo editing, illustration, video, and animation." },
+  { category: "Creative Apps", title: "Photopea Editor", url: "https://photopea.com", tags: "creativity creative apps adobe photoshop alternative free editor", snippet: "Free browser-based photo editor that works like Adobe Photoshop." },
+  { category: "Creative Apps", title: "Canva Design Studio", url: "https://canva.com", tags: "creativity creative apps design posters book covers logos free", snippet: "Design book covers, posters, logos, and comics for free." },
+  { category: "Creative Apps", title: "Blender 3D", url: "https://blender.org", tags: "creativity creative apps 3d modeling animation free", snippet: "Free 3D creation software for modeling, animation, and game assets." },
+  { category: "Space & NASA", title: "NASA Space Exploration", url: "https://nasa.gov", tags: "space nasa planets stars galaxies rockets astronomy", snippet: "Explore planets, black holes, Mars rovers, and space missions." },
+  { category: "Coding", title: "Scratch Game Creator", url: "https://mit.edu", tags: "coding programming game dev scratch animations creative", snippet: "Code your own interactive games, stories, and animations." },
+  { category: "Music", title: "BandLab Music Studio", url: "https://bandlab.com", tags: "music audio beats sound effects songs creative", snippet: "Make music and create soundtracks online for free." },
+  { category: "Art & Drawing", title: "Kleki Painting Tool", url: "https://kleki.com", tags: "art drawing painting sketching digital art", snippet: "Draw and paint digital artwork in your browser." },
+  { category: "Myths & Legends", title: "Mythopedia", url: "https://mythopedia.com", tags: "myths legends gods monsters folklore greek norse egyptian", snippet: "Discover ancient gods, legendary monsters, and creation myths." },
+  { category: "History", title: "National Geographic History", url: "https://nationalgeographic.com", tags: "history ancient egypt rome medieval archaeology", snippet: "Uncover lost civilizations and world history." },
+  { category: "Board Games", title: "BoardGameGeek", url: "https://boardgamegeek.com", tags: "board games tabletop card games strategy", snippet: "Database of board games, card games, and reviews." },
+  { category: "Science", title: "Science Buddies", url: "https://sciencebuddies.org", tags: "science experiments chemistry physics biology", snippet: "Hands-on science experiments and engineering builds." },
+  { category: "Geography", title: "GeoGuessr", url: "https://geoguessr.com", tags: "geography countries flags world travel maps", snippet: "Test your knowledge of world countries and landmarks." },
+  { category: "Cooking", title: "BBC Good Food", url: "https://bbcgoodfood.com", tags: "cooking baking recipes food cakes snacks", snippet: "Thousands of easy recipes for baking, snacks, and meals." }
+];
+
+function runSearch(event) {
+  if (event) event.preventDefault();
+  const rawQuery = document.getElementById('searchInput').value.trim();
+  const words = rawQuery.toLowerCase().split(/\s+/);
+  const resultsArea = document.getElementById('resultsArea');
+  if (!rawQuery) return false;
+
+  document.body.classList.add('has-results');
+
+  const matches = pigDatabase.filter(function(item) {
+    const fullText = (item.category + ' ' + item.title + ' ' + item.tags + ' ' + item.snippet).toLowerCase();
+    return words.every(function(word) { return fullText.indexOf(word) !== -1; });
+  });
+
+  let html = '';
+  if (matches.length > 0) {
+    matches.forEach(function(item) {
+
+html += '' +
+'' + item.category + '' +
+'' + item.url + '' +
+'' + item.title + '' +
+'' + item.snippet + '' +
+'';
+});
+} else {
+html = '' +
+'🐷 No built-in cards matched "' + rawQuery + '" yet!' +
+'Search the Full Web for "' + rawQuery + '" →' +
+'';
+}
+resultsArea.innerHTML = html;
+return false;
+}
