@@ -3,24 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pigsrule.com - The Official Search Engine</title>
+  <title>Pigsrule.com# - The Official Search Engine</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      padding: 0;
+      padding: 20px;
       font-family: "Trebuchet MS", Arial, sans-serif;
       background: linear-gradient(135deg, #ffd6e7 0%, #f3d9ff 100%);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      justify-content: center;
       align-items: center;
       color: #3a1226;
     }
 
     header {
       text-align: center;
-      margin-top: 60px;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
 
     .pig-icon {
@@ -50,19 +54,25 @@
     }
 
     .search-container {
-      width: 90%;
-      max-width: 800px;
+      width: 100%;
+      max-width: 750px;
       background-color: #ffffff;
-      padding: 25px;
+      padding: 20px 25px;
       border-radius: 20px;
       border: 4px solid #cc7a9f;
       box-shadow: 0 10px 25px rgba(184, 41, 111, 0.2);
-      margin-bottom: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .search-container > div {
+      width: 100%;
     }
 
     footer {
-      margin-top: auto;
-      padding: 20px;
+      position: fixed;
+      bottom: 15px;
       font-size: 14px;
       color: #6b244b;
       text-align: center;
@@ -73,18 +83,18 @@
 
   <header>
     <span class="pig-icon">🐷</span>
-    <h1>Pigsrule.com</h1>
+    <h1 translate="no"><span>Pigsrule</span><span>.com#</span></h1>
     <div class="subtitle">Searching Doctor Who, Video Games, Books &amp; Poki!</div>
   </header>
 
   <main class="search-container">
     <!-- Your Custom Pigsrule.com Search Engine -->
-    <script async src="https://cse.google.com/cse.js?cx=911196919895b46d9"></script>
+    <script async src="https://google.com"></script>
     <div class="gcse-search"></div>
   </main>
 
   <footer>
-    Powered by Pigsrule.com &bull; Made for fans of Doctor Who, Games &amp; Books
+    Powered by Pigsrule.com# &bull; Made for fans of Doctor Who, Games &amp; Books
   </footer>
 
 </body>
