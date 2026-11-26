@@ -11,7 +11,7 @@
 
     body {
       margin: 0;
-      padding: 20px;
+      padding: 30px 20px 60px;
       font-family: "Trebuchet MS", Arial, sans-serif;
       background: linear-gradient(135deg, #ffd6e7 0%, #f3d9ff 100%);
       min-height: 100vh;
@@ -20,6 +20,11 @@
       justify-content: center;
       align-items: center;
       color: #3a1226;
+      transition: all 0.3s ease;
+    }
+
+    body.has-results {
+      justify-content: flex-start;
     }
 
     header {
@@ -55,9 +60,9 @@
 
     .search-container {
       width: 100%;
-      max-width: 720px;
+      max-width: 760px;
       background-color: #ffffff;
-      padding: 24px;
+      padding: 22px;
       border-radius: 22px;
       border: 4px solid #cc7a9f;
       box-shadow: 0 10px 25px rgba(184, 41, 111, 0.2);
@@ -103,35 +108,69 @@
       border-color: #7a1848;
     }
 
-    .categories {
+    #resultsArea {
+      width: 100%;
+      max-width: 760px;
+      margin-top: 24px;
       display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      justify-content: center;
-      margin-top: 16px;
+      flex-direction: column;
+      gap: 14px;
     }
 
-    .cat-btn {
-      padding: 6px 14px;
-      font-size: 14px;
+    .result-card {
+      background-color: #ffffff;
+      padding: 18px 22px;
+      border-radius: 16px;
+      border: 3px solid #decaff;
+      box-shadow: 0 4px 12px rgba(184, 41, 111, 0.1);
+      transition: transform 0.15s, border-color 0.15s;
+    }
+
+    .result-card:hover {
+      transform: translateY(-2px);
+      border-color: #cc7a9f;
+    }
+
+    .result-url {
+      font-size: 13px;
+      color: #923c99;
+      margin-bottom: 4px;
+      word-break: break-all;
+    }
+
+    .result-title {
+      font-size: 20px;
       font-weight: bold;
-      font-family: inherit;
-      border-radius: 20px;
-      border: 2px solid #cc7a9f;
-      background-color: #fff0f6;
-      color: #6b244b;
-      cursor: pointer;
+      color: #b8296f;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 6px;
     }
 
-    .cat-btn.active {
-      background-color: #b8296f;
-      color: #ffffff;
-      border-color: #b8296f;
+    .result-title:hover {
+      text-decoration: underline;
+    }
+
+    .result-snippet {
+      font-size: 15px;
+      color: #3a1226;
+      line-height: 1.45;
+      margin: 0;
+    }
+
+    .status-msg {
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold;
+      color: #6b244b;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 16px;
     }
 
     footer {
-      position: fixed;
-      bottom: 15px;
+      margin-top: auto;
+      padding-top: 30px;
       font-size: 14px;
       color: #6b244b;
       text-align: center;
@@ -143,55 +182,94 @@
   <header>
     <span class="pig-icon">🐷</span>
     <h1 translate="no"><span>P</span><span>i</span><span>g</span><span>s</span><span>r</span><span>u</span><span>l</span><span>e</span><span>.</span><span>c</span><span>o</span><span>m</span></h1>
-    <div class="subtitle">Searching Doctor Who, Video Games, Books, Poki &amp; More!</div>
+    <div class="subtitle">Searching the Whole Web &bull; Built on Pigsrule.com</div>
   </header>
 
   <main class="search-container">
     <form class="search-box" onsubmit="runSearch(event)">
-      <input type="text" id="searchInput" placeholder="Type anything to search..." autofocus required />
+      <input type="text" id="searchInput" placeholder="Search the entire web..." autofocus required />
       <button type="submit" class="search-btn">🔍 Search</button>
     </form>
-
-    <div class="categories">
-      <button type="button" class="cat-btn active" onclick="setMode('curated', this)">Doctor Who, Games &amp; Books</button>
-      <button type="button" class="cat-btn" onclick="setMode('who', this)">Doctor Who Only</button>
-      <button type="button" class="cat-btn" onclick="setMode('games', this)">Games &amp; Poki</button>
-      <button type="button" class="cat-btn" onclick="setMode('books', this)">Books</button>
-      <button type="button" class="cat-btn" onclick="setMode('web', this)">Whole Web</button>
-    </div>
   </main>
+
+  <section id="resultsArea"></section>
 
   <footer>
     Powered by Pigsrule.com &bull; Made for fans of Doctor Who, Games &amp; Books
   </footer>
 
   <script>
-    let currentMode = 'curated';
-
-    function setMode(mode, btn) {
-      currentMode = mode;
-      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    }
-
-    function runSearch(event) {
+    async function runSearch(event) {
       event.preventDefault();
       const query = document.getElementById('searchInput').value.trim();
+      const resultsArea = document.getElementById('resultsArea');
       if (!query) return;
 
-      let filter = '';
-      if (currentMode === 'curated') {
-        filter = ' (site:doctorwho.tv OR site:tardis.wiki OR site:ign.com OR site:poki.com OR site:goodreads.com OR site:fandom.com)';
-      } else if (currentMode === 'who') {
-        filter = ' (site:doctorwho.tv OR site:tardis.wiki OR site:bigfinish.com OR site:doctorwhonews.net)';
-      } else if (currentMode === 'games') {
-        filter = ' (site:poki.com OR site:ign.com OR site:gamespot.com OR site:steampowered.com OR site:nintendolife.com)';
-      } else if (currentMode === 'books') {
-        filter = ' (site:goodreads.com OR site:waterstones.com OR site:penguin.co.uk OR site:openlibrary.org)';
-      }
+      document.body.classList.add('has-results');
+      resultsArea.innerHTML = '<div class="status-msg">🐷 Sniffing out results across the web...</div>';
 
-      const finalQuery = encodeURIComponent(query + filter);
-      window.open('https://google.com' + finalQuery, '_blank');
+      try {
+        // Fetch live web & knowledge results from Wikipedia + DuckDuckGo APIs
+        const [wikiRes, ddgRes] = await Promise.all([
+          fetch(`https://wikipedia.org{encodeURIComponent(query)}&utf8=&format=json&origin=*`),
+          fetch(`https://duckduckgo.com{encodeURIComponent(query)}&format=json&no_html=1&skip_disambig=1`)
+        ]);
+
+        const wikiData = await wikiRes.json();
+        const ddgData = await ddgRes.json();
+
+        let cardsHTML = '';
+
+        // 1. Add DuckDuckGo Direct Answer / Official Site if found
+        if (ddgData.AbstractText && ddgData.AbstractURL) {
+          cardsHTML += `
+            <div class="result-card">
+              <div class="result-url">${ddgData.AbstractURL}</div>
+              <a class="result-title" href="${ddgData.AbstractURL}" target="_blank" rel="noopener">${ddgData.Heading || query}</a>
+              <p class="result-snippet">${ddgData.AbstractText}</p>
+            </div>
+          `;
+        }
+
+        // 2. Add DuckDuckGo Related Web Links
+        if (ddgData.RelatedTopics && ddgData.RelatedTopics.length > 0) {
+          ddgData.RelatedTopics.slice(0, 4).forEach(topic => {
+            if (topic.FirstURL && topic.Text) {
+              const title = topic.Text.split(' - ')[0] || query;
+              cardsHTML += `
+                <div class="result-card">
+                  <div class="result-url">${topic.FirstURL}</div>
+                  <a class="result-title" href="${topic.FirstURL}" target="_blank" rel="noopener">${title}</a>
+                  <p class="result-snippet">${topic.Text}</p>
+                </div>
+              `;
+            }
+          });
+        }
+
+        // 3. Add Full Web Topic Articles
+        if (wikiData.query && wikiData.query.search.length > 0) {
+          wikiData.query.search.forEach(item => {
+            const pageUrl = `https://wikipedia.org{encodeURIComponent(item.title.replace(/ /g, '_'))}`;
+            const cleanSnippet = item.snippet.replace(/<\/?[^>]+(>|$)/g, "");
+            cardsHTML += `
+              <div class="result-card">
+                <div class="result-url">${pageUrl}</div>
+                <a class="result-title" href="${pageUrl}" target="_blank" rel="noopener">${item.title}</a>
+                <p class="result-snippet">${cleanSnippet}...</p>
+              </div>
+            `;
+          });
+        }
+
+        if (!cardsHTML) {
+          resultsArea.innerHTML = `<div class="status-msg">No direct matches found on Pigsrule.com for "${query}". Try a different keyword!</div>`;
+        } else {
+          resultsArea.innerHTML = cardsHTML;
+        }
+      } catch (err) {
+        resultsArea.innerHTML = `<div class="status-msg">Oops! Could not fetch results right now. Check your connection and try again.</div>`;
+      }
     }
   </script>
 
