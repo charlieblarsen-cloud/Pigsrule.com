@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pigsrule.com - The Official Search Engine</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Trebuchet MS", Arial, sans-serif;
+      background: linear-gradient(135deg, #ffd6e7 0%, #f3d9ff 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #3a1226;
+    }
+
+    header {
+      text-align: center;
+      margin-top: 60px;
+      margin-bottom: 20px;
+    }
+
+    .pig-icon {
+      font-size: 72px;
+      display: block;
+      margin-bottom: 10px;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    h1 {
+      font-size: 48px;
+      margin: 0;
+      color: #b8296f;
+      text-shadow: 2px 2px 0px #ffffff;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #6b244b;
+      margin-top: 6px;
+      font-weight: bold;
+    }
+
+    .search-container {
+      width: 90%;
+      max-width: 800px;
+      background-color: #ffffff;
+      padding: 25px;
+      border-radius: 20px;
+      border: 4px solid #cc7a9f;
+      box-shadow: 0 10px 25px rgba(184, 41, 111, 0.2);
+      margin-bottom: 40px;
+    }
+
+    footer {
+      margin-top: auto;
+      padding: 20px;
+      font-size: 14px;
+      color: #6b244b;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <span class="pig-icon">🐷</span>
+    <h1>://com.com</h1>
+    <div class="subtitle">Searching Doctor Who, Video Games, Books &amp; Poki!</div>
+  </header>
+
+  <main class="search-container">
+    <!-- Your Custom Pigsrule.com Search Engine -->
+    <script async src="https://cse.google.com/cse.js?cx=911196919895b46d9"></script>
+    <div class="gcse-search"></div>
+  </main>
+
+  <footer>
+    Powered by Pigsrule.com &bull; Made for fans of Doctor Who, Games &amp; Books
+  </footer>
+
+</body>
+</html>
