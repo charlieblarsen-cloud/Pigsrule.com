@@ -1,4 +1,3 @@
-html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,7 +32,7 @@ html
       border: 4px solid #cc7a9f;
       box-shadow: 0 10px 25px rgba(184, 41, 111, 0.2);
     }
-    .search-row { display: flex; gap: 10px; width: 100%; }
+    form.search-row { display: flex; gap: 10px; width: 100%; margin: 0; }
     input[type="text"] {
       flex: 1;
       padding: 14px 18px;
@@ -82,148 +81,28 @@ html
       margin-bottom: 6px;
     }
     .result-url { font-size: 13px; color: #923c99; margin-bottom: 4px; word-break: break-all; }
-    .result-title {
-      font-size: 20px;
-      font-weight: bold;
-      color: #b8296f;
-      text-decoration: none;
-      display: inline-block;
-      margin-bottom: 6px;
-    }
+    .result-title { font-size: 20px; font-weight: bold; color: #b8296f; text-decoration: none; display: inline-block; margin-bottom: 6px; }
     .result-title:hover { text-decoration: underline; }
     .result-snippet { font-size: 15px; color: #3a1226; line-height: 1.45; margin: 0; }
-    .status-msg {
-      text-align: center;
-      font-size: 16px;
-      font-weight: bold;
-      color: #6b244b;
-      padding: 20px;
-      background: rgba(255, 255, 255, 0.85);
-      border-radius: 16px;
-      border: 2px solid #cc7a9f;
-    }
-    .web-btn {
-      display: inline-block;
-      margin-top: 12px;
-      padding: 10px 18px;
-      background-color: #b8296f;
-      color: #ffffff;
-      text-decoration: none;
-      border-radius: 12px;
-      font-weight: bold;
-    }
+    .status-msg { text-align: center; font-size: 16px; font-weight: bold; color: #6b244b; padding: 20px; background: rgba(255, 255, 255, 0.85); border-radius: 16px; border: 2px solid #cc7a9f; }
+    .web-btn { display: inline-block; margin-top: 12px; padding: 10px 18px; background-color: #b8296f; color: #ffffff; text-decoration: none; border-radius: 12px; font-weight: bold; }
     footer { margin-top: auto; padding-top: 30px; font-size: 14px; color: #6b244b; text-align: center; }
   </style>
 </head>
 <body>
-
   <header>
     <span class="pig-icon">🐷</span>
     <h1 translate="no"><span>P</span><span>i</span><span>g</span><span>s</span><span>r</span><span>u</span><span>l</span><span>e</span><span>.</span><span>c</span><span>o</span><span>m</span></h1>
     <div class="subtitle">Search Doctor Who, Poki, D&amp;D, Animals, Comics, Books, Harry Potter, Maps, Creative Apps &amp; More!</div>
   </header>
-
   <main class="search-container">
-    <div class="search-row">
-      <input type="text" id="searchInput" placeholder="Search anything on Pigsrule.com..." autofocus onkeydown="if(event.key==='Enter') runSearch()" />
-      <button type="button" onclick="runSearch()">🔍 Search</button>
-    </div>
+    <form class="search-row" onsubmit="runSearch(event)">
+      <input type="text" id="searchInput" placeholder="Search anything on Pigsrule.com..." autofocus required />
+      <button type="submit">🔍 Search</button>
+    </form>
   </main>
-
   <section id="resultsArea"></section>
-
-  <footer>
-    Powered by Pigsrule.com &bull; Built for Creators, Readers &amp; Gamers
-  </footer>
-
-  <script>
-    const pigDatabase = [
-      // DOCTOR WHO
-      { category: "Doctor Who", title: "Doctor Who Official Website", url: "https://doctorwho.tv", tags: "dr who doctor who drwho tardis dalek cybermen bbc sci fi episodes", snippet: "The official home of Doctor Who! Explore episodes, Doctors, companions, monsters, and news from across time and space." },
-      { category: "Doctor Who", title: "TARDIS Wiki - The Doctor Who Encyclopedia", url: "https://tardis.wiki", tags: "dr who doctor who drwho tardis wiki lore dalek timelord gallifrey", snippet: "The massive community encyclopedia covering every Doctor Who episode, character, alien species, and audio drama." },
-      { category: "Doctor Who", title: "Big Finish - Doctor Who Audio Adventures", url: "https://bigfinish.com", tags: "dr who doctor who drwho audio stories big finish", snippet: "Full-cast Doctor Who audio dramas starring the original Doctors and companions." },
-
-      // POKI & VIDEO GAMES
-      { category: "Games & Poki", title: "Poki - Free Online Browser Games", url: "https://poki.com", tags: "poki video games play online browser games free", snippet: "Play thousands of free online games instantly in your browser on Poki—no downloads needed!" },
-      { category: "Video Games", title: "IGN - Video Game News, Reviews & Guides", url: "https://ign.com", tags: "video games ign reviews gaming nintendo playstation xbox pc", snippet: "Latest video game reviews, trailers, walkthroughs, and gaming news." },
-      { category: "Video Games", title: "Steam - PC Gaming Platform", url: "https://steampowered.com", tags: "steam pc video games gaming store", snippet: "Discover, play, and discuss thousands of PC video games." },
-      { category: "Video Games", title: "Nintendo Life - Switch & Nintendo News", url: "https://nintendolife.com", tags: "nintendo switch video games mario zelda gaming", snippet: "All the latest Nintendo Switch news, game reviews, and features." },
-
-      // D AND D
-      { category: "D&D", title: "D&D Beyond - Official Dungeons & Dragons Toolset", url: "https://dndbeyond.com", tags: "d and d dandd d&d dnd dungeons and dragons character builder spells monsters", snippet: "The official digital toolset and game companion for Dungeons & Dragons fifth edition." },
-      { category: "D&D", title: "Roll20 - Virtual Tabletop for D&D", url: "https://roll20.net", tags: "d and d dandd d&d dnd dungeons and dragons tabletop campaign maps", snippet: "Play Dungeons & Dragons and tabletop RPGs online with digital battle maps and dice rollers." },
-
-      // ALL ANIMALS
-      { category: "All Animals", title: "National Geographic Animals", url: "https://nationalgeographic.com", tags: "all animals wildlife mammals birds reptiles ocean sharks pigs capybara", snippet: "Explore facts, photos, and habitats for every animal species on Earth—from pigs and capybaras to deep-sea creatures." },
-      { category: "All Animals", title: "San Diego Zoo Wildlife Explorer", url: "https://sandiegozoo.org", tags: "all animals zoo wildlife mammals amphibians insects facts", snippet: "A huge encyclopedia of animals organized by species, habitat, and diet." },
-      { category: "All Animals", title: "Capybara Legends - Goorglefellae & Spiderbara Lore", url: "#capybara-legends", tags: "all animals capybara legends goorglefellae spiderbara cookabaras tazz xame poshos", snippet: "The mythic saga of Goorglefellae (10-legged winged capybara god), Spiderbara, the disco-loving Cookabaras, and the demon Tazz Xame!" },
-
-      // COMICS
-      { category: "Comics", title: "Marvel Comics Official Site", url: "https://marvel.com", tags: "comics superheroes spider-man avengers x-men graphic novels", snippet: "Explore Marvel Comics characters, series, reading guides, and digital issues." },
-      { category: "Comics", title: "DC Comics Official Site", url: "https://dc.com", tags: "comics batman superman wonder woman graphic novels", snippet: "Discover DC Comics, graphic novels, and iconic superhero universes." },
-      { category: "Comics", title: "WEBTOON - Digital Comics & Manga", url: "https://webtoons.com", tags: "comics webtoon manga graphic novels fantasy sci fi read online", snippet: "Read thousands of free creator-owned comics across fantasy, sci-fi, comedy, and action." },
-
-      // BOOKS
-      { category: "Books", title: "Goodreads - Book Reviews & Recommendations", url: "https://goodreads.com", tags: "books reading novels reviews fantasy sci fi goodreads", snippet: "Find your next favourite book, read reviews, and track everything you want to read." },
-      { category: "Books", title: "Waterstones - Books & Bestsellers", url: "https://waterstones.com", tags: "books bookshop reading fiction fantasy waterstones", snippet: "Browse millions of books across fantasy, sci-fi, horror, and adventure." },
-      { category: "Books", title: "Open Library - Free Digital Books", url: "https://openlibrary.org", tags: "books free library read online novels open library", snippet: "An open digital library with millions of free books you can borrow and read online." },
-
-      // HARRY POTTER
-      { category: "Harry Potter", title: "Harry Potter Official (Wizarding World)", url: "https://harrypotter.com", tags: "harry potter harrypotter hogwarts wizarding world magic gryffindor slytherin ravenclaw hufflepuff", snippet: "The official home of Harry Potter and the Wizarding World—take the Sorting Hat quiz, explore spells, and read wizarding news." },
-{ category: "Harry Potter", title: "Harry Potter Wiki", url: "fandom.com", tags: "harry potter harrypotter wiki hogwarts spells characters potions", snippet: "Detailed encyclopedia covering every spell, potion, character, and location in the Harry Potter universe." },
-// MOVIES & TV SHOWS
-{ category: "Movies & TV Shows", title: "IMDb - Movies, TV Shows & Cast Info", url: "imdb.com", tags: "movies tv shows tvshows series actors trailers ratings reviews", snippet: "The world's most popular source for movie and TV show ratings, trailers, cast lists, and trivia." },
-{ category: "Movies & TV Shows", title: "Rotten Tomatoes - Movie & TV Reviews", url: "rottentomatoes.com", tags: "movies tv shows tvshows reviews ratings cinema streaming", snippet: "Check critic and audience scores for movies and TV series." },
-{ category: "Movies & TV Shows", title: "BBC iPlayer - TV Shows & Sci-Fi", url: "bbc.co.uk", tags: "tv shows tvshows bbc doctor who series watch", snippet: "Watch BBC TV shows, documentaries, and sci-fi series." },
-// ALL SCHOOL SUBJECTS
-{ category: "School Subjects", title: "BBC Bitesize - All School Subjects", url: "bbc.co.uk", tags: "all school subjects maths english science history geography computing art revision", snippet: "Free study guides, quizzes, and revision resources for every school subject from primary to high school." },
-{ category: "School Subjects", title: "Khan Academy - Free Lessons in Every Subject", url: "khanacademy.org", tags: "all school subjects math science computing history economics grammar", snippet: "Free world-class lessons and practice exercises in maths, science, computing, history, and more." },
-// MAKING CUSTOM MAPS
-{ category: "Custom Maps", title: "Inkarnate - Fantasy Map Maker", url: "https://inkarnate.com", tags: "making custom maps fantasy worldbuilding map maker dnd", snippet: "Create stunning custom fantasy world maps, continents, and battle maps right in your browser." },
-{ category: "Custom Maps", title: "Azgaar's Fantasy Map Generator", url: "github.io", tags: "making custom maps fantasy world generator kingdoms rivers", snippet: "Free procedural fantasy world map generator with customizable countries, cultures, and terrain." },
-{ category: "Custom Maps", title: "Google My Maps - Custom Real-World Maps", url: "google.com", tags: "making custom maps pins routes geography", snippet: "Create and share custom maps with your own pins, routes, and shapes." },
-// CREATIVITY & CREATIVE APPS (ADOBE & OTHERS)
-{ category: "Creative Apps", title: "Adobe Creative Cloud (Photoshop, Illustrator, Premiere)", url: "adobe.com", tags: "creativity creative apps adobe photoshop illustrator premiere animate design", snippet: "Explore Adobe's industry-standard creative apps for photo editing, illustration, video editing, and animation." },
-{ category: "Creative Apps", title: "Photopea - Free Online Photo & Graphic Editor", url: "photopea.com", tags: "creativity creative apps adobe photoshop alternative free editor browser", snippet: "A powerful, completely free browser-based image editor that works just like Adobe Photoshop." },
-{ category: "Creative Apps", title: "Canva - Free Graphic Design & Publishing Studio", url: "canva.com", tags: "creativity creative apps design posters book covers logos free", snippet: "Design book covers, posters, logos, comics, and presentations easily with free templates." },
-{ category: "Creative Apps", title: "Blender - Free 3D Creation & Animation Suite", url: "blender.org", tags: "creativity creative apps 3d modeling animation sculpting free", snippet: "Free and open-source 3D creation software for modeling, animation, visual effects, and game assets." },
-// 10 BONUS CATEGORIES
-{ category: "Space & NASA", title: "NASA - Space Exploration & Astronomy", url: "nasa.gov", tags: "space nasa planets stars galaxies rockets universe astronomy", snippet: "Explore the universe, black holes, Mars rovers, and live space missions with NASA." },
-{ category: "Coding & Game Dev", title: "Scratch - Create Games, Stories & Animations", url: "mit.edu", tags: "coding programming game dev scratch animations creative", snippet: "Code your own interactive games, stories, and animations and share them with millions of creators." },
-{ category: "Music & Sound", title: "BandLab - Free Online Music Studio", url: "bandlab.com", tags: "music audio beats sound effects songs creative", snippet: "Make music, mix tracks, and create soundtracks for your games and movies online for free." },
-{ category: "Art & Drawing", title: "Kleki - Free Browser Painting & Sketching Tool", url: "https://kleki.com", tags: "art drawing painting sketching digital art brushes", snippet: "Draw, paint, and sketch digital artwork instantly in your browser with layers and custom brushes." },
-{ category: "Myths & Legends", title: "Mythopedia - World Mythology Encyclopedia", url: "https://mythopedia.com", tags: "myths legends gods monsters folklore greek norse egyptian", snippet: "Discover ancient gods, legendary monsters, and epic creation myths from around the world." },
-{ category: "World History", title: "National Geographic History & Ancient Civilizations", url: "nationalgeographic.com", tags: "history ancient egypt rome medieval archaeology", snippet: "Uncover lost civilizations, famous battles, and fascinating moments from world history." },
-{ category: "Board Games", title: "BoardGameGeek - Board Games & Tabletop Database", url: "https://boardgamegeek.com", tags: "board games tabletop card games strategy", snippet: "The largest database of board games, card games, reviews, and rules." },
-{ category: "Science & Experiments", title: "Science Buddies - Cool Science Projects", url: "sciencebuddies.org", tags: "science experiments chemistry physics biology inventions", snippet: "Hands-on science experiments, engineering builds, and DIY discoveries." },
-{ category: "World Geography", title: "GeoGuessr & World Geography Explorer", url: "geoguessr.com", tags: "geography countries flags world travel maps", snippet: "Test your knowledge of world countries, landmarks, and geography." },
-{ category: "Cooking & Recipes", title: "BBC Good Food - Recipes & Baking", url: "bbcgoodfood.com", tags: "cooking baking recipes food cakes snacks", snippet: "Thousands of easy, delicious recipes for baking, snacks, and meals." }
-];
-function runSearch() {
-const rawQuery = document.getElementById('searchInput').value.trim();
-const words = rawQuery.toLowerCase().split(/\s+/);
-const resultsArea = document.getElementById('resultsArea');
-if (!rawQuery) return;
-document.body.classList.add('has-results');
-const matches = pigDatabase.filter(item => {
-const fullText = (item.category + ' ' + item.title + ' ' + item.tags + ' ' + item.snippet).toLowerCase();
-return words.every(word => fullText.includes(word));
-});
-let html = '';
-if (matches.length > 0) {
-matches.forEach(item => {
-html += `
-
-${item.category}
-${item.url}
-${item.title}
-${item.snippet}
-; }); } else { html += 
-
-🐷 No built-in Pigsrule.com cards matched "${rawQuery}" yet!
-Search the Full Web for "${rawQuery}" →
-
-`;
-}
-resultsArea.innerHTML = html;
-}
+  <footer>Powered by Pigsrule.com &bull; Built for Creators, Readers &amp; Gamers</footer>
+  <script src="data.js"></script>
+</body>
+</html>
