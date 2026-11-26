@@ -209,47 +209,15 @@
       resultsArea.innerHTML = '<div class="status-msg">🐷 Sniffing out results across the web...</div>';
 
       try {
-        // Fetch live web & knowledge results from Wikipedia + DuckDuckGo APIs
-        const [wikiRes, ddgRes] = await Promise.all([
-          fetch(`https://wikipedia.org{encodeURIComponent(query)}&utf8=&format=json&origin=*`),
-          fetch(`https://duckduckgo.com{encodeURIComponent(query)}&format=json&no_html=1&skip_disambig=1`)
-        ]);
-
-        const wikiData = await wikiRes.json();
-        const ddgData = await ddgRes.json();
+        const response = await fetch(
+          `https://wikipedia.org{encodeURIComponent(query)}&srlimit=10&utf8=&format=json&origin=*`
+        );
+        const data = await response.json();
 
         let cardsHTML = '';
 
-        // 1. Add DuckDuckGo Direct Answer / Official Site if found
-        if (ddgData.AbstractText && ddgData.AbstractURL) {
-          cardsHTML += `
-            <div class="result-card">
-              <div class="result-url">${ddgData.AbstractURL}</div>
-              <a class="result-title" href="${ddgData.AbstractURL}" target="_blank" rel="noopener">${ddgData.Heading || query}</a>
-              <p class="result-snippet">${ddgData.AbstractText}</p>
-            </div>
-          `;
-        }
-
-        // 2. Add DuckDuckGo Related Web Links
-        if (ddgData.RelatedTopics && ddgData.RelatedTopics.length > 0) {
-          ddgData.RelatedTopics.slice(0, 4).forEach(topic => {
-            if (topic.FirstURL && topic.Text) {
-              const title = topic.Text.split(' - ')[0] || query;
-              cardsHTML += `
-                <div class="result-card">
-                  <div class="result-url">${topic.FirstURL}</div>
-                  <a class="result-title" href="${topic.FirstURL}" target="_blank" rel="noopener">${title}</a>
-                  <p class="result-snippet">${topic.Text}</p>
-                </div>
-              `;
-            }
-          });
-        }
-
-        // 3. Add Full Web Topic Articles
-        if (wikiData.query && wikiData.query.search.length > 0) {
-          wikiData.query.search.forEach(item => {
+        if (data.query && data.query.search && data.query.search.length > 0) {
+          data.query.search.forEach(item => {
             const pageUrl = `https://wikipedia.org{encodeURIComponent(item.title.replace(/ /g, '_'))}`;
             const cleanSnippet = item.snippet.replace(/<\/?[^>]+(>|$)/g, "");
             cardsHTML += `
@@ -260,15 +228,12 @@
               </div>
             `;
           });
-        }
-
-        if (!cardsHTML) {
-          resultsArea.innerHTML = `<div class="status-msg">No direct matches found on Pigsrule.com for "${query}". Try a different keyword!</div>`;
-        } else {
           resultsArea.innerHTML = cardsHTML;
+        } else {
+          resultsArea.innerHTML = `<div class="status-msg">No direct matches found on Pigsrule.com for "${query}". Try a different spelling!</div>`;
         }
       } catch (err) {
-        resultsArea.innerHTML = `<div class="status-msg">Oops! Could not fetch results right now. Check your connection and try again.</div>`;
+        resultsArea.innerHTML = `<div class="status-msg">Oops! Could not fetch results right now. Try again in a moment!</div>`;
       }
     }
   </script>
