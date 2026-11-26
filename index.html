@@ -85,8 +85,19 @@
       font-weight: bold;
       color: #6b244b;
       padding: 20px;
-      background: rgba(255, 255, 255, 0.7);
+      background: rgba(255, 255, 255, 0.85);
       border-radius: 16px;
+      border: 2px solid #cc7a9f;
+    }
+    .web-btn {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 10px 18px;
+      background-color: #b8296f;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: bold;
     }
     footer { margin-top: auto; padding-top: 30px; font-size: 14px; color: #6b244b; text-align: center; }
   </style>
@@ -96,12 +107,12 @@
   <header>
     <span class="pig-icon">🐷</span>
     <h1 translate="no"><span>P</span><span>i</span><span>g</span><span>s</span><span>r</span><span>u</span><span>l</span><span>e</span><span>.</span><span>c</span><span>o</span><span>m</span></h1>
-    <div class="subtitle">Searching the Whole Web &bull; Built on Pigsrule.com</div>
+    <div class="subtitle">Instant Search for Doctor Who, Games, Books, Poki &amp; Pigs!</div>
   </header>
 
   <main class="search-container">
     <form onsubmit="runSearch(event)">
-      <input type="text" id="searchInput" placeholder="Search anything on Pigsrule.com..." autofocus required />
+      <input type="text" id="searchInput" placeholder="Try: Doctor Who, Poki, Capybara, Books, Pigs..." autofocus required />
       <button type="submit">🔍 Search</button>
     </form>
   </main>
@@ -113,44 +124,118 @@
   </footer>
 
   <script>
-    function showPigsruleResults(data) {
-      const resultsArea = document.getElementById('resultsArea');
-      const query = document.getElementById('searchInput').value.trim();
-
-      if (data.query && data.query.search && data.query.search.length > 0) {
-        let html = '';
-        data.query.search.forEach(item => {
-          const url = 'https://wikipedia.org' + encodeURIComponent(item.title.replace(/ /g, '_'));
-          const snippet = item.snippet.replace(/<\/?[^>]+(>|$)/g, '');
-          html += `
-            <div class="result-card">
-              <div class="result-url">${url}</div>
-              <a class="result-title" href="${url}" target="_blank" rel="noopener">${item.title}</a>
-              <p class="result-snippet">${snippet}...</p>
-            </div>
-          `;
-        });
-        resultsArea.innerHTML = html;
-      } else {
-        resultsArea.innerHTML = `<div class="status-msg">No matches found on Pigsrule.com for "${query}". Try another word!</div>`;
+    const pigDatabase = [
+      {
+        title: "Doctor Who Official Website",
+        url: "https://doctorwho.tv",
+        tags: "doctor who tardis dalek cybermen bbc sci fi episodes",
+        snippet: "The official home of Doctor Who! Explore episodes, Doctors, companions, monsters, and news from across time and space."
+      },
+      {
+        title: "TARDIS Wiki - The Doctor Who Encyclopedia",
+        url: "https://tardis.wiki",
+        tags: "doctor who tardis wiki lore dalek timelord gallifrey",
+        snippet: "The massive community encyclopedia covering every Doctor Who episode, character, alien species, and audio drama."
+      },
+      {
+        title: "Big Finish Productions - Doctor Who Audio Dramas",
+        url: "https://bigfinish.com",
+        tags: "doctor who audio stories books big finish",
+        snippet: "Full-cast Doctor Who audio adventures starring the original Doctors and companions."
+      },
+      {
+        title: "Poki - Free Online Games",
+        url: "https://poki.com",
+        tags: "poki video games play online browser games free",
+        snippet: "Play thousands of free online games instantly in your browser on Poki—no downloads needed!"
+      },
+      {
+        title: "IGN - Video Game News, Reviews & Walkthroughs",
+        url: "https://ign.com",
+        tags: "video games ign reviews gaming nintendo playstation xbox pc",
+        snippet: "Latest video game reviews, trailers, guides, and gaming news."
+      },
+      {
+        title: "Steam - PC Gaming Store",
+        url: "https://steampowered.com",
+        tags: "steam pc video games gaming store",
+        snippet: "The ultimate destination for playing, discussing, and creating PC video games."
+      },
+      {
+        title: "Nintendo Life - Nintendo News & Reviews",
+        url: "https://nintendolife.com",
+        tags: "nintendo switch video games mario zelda gaming",
+        snippet: "All the latest Nintendo Switch news, game reviews, and features."
+      },
+      {
+        title: "Goodreads - Discover & Track Books",
+        url: "https://goodreads.com",
+        tags: "books reading novels reviews fantasy sci fi goodreads",
+        snippet: "Find your next favourite book, read reviews, and track everything you want to read."
+      },
+      {
+        title: "Waterstones - Books & Bestsellers",
+        url: "https://waterstones.com",
+        tags: "books bookshop reading fiction fantasy waterstones",
+        snippet: "Browse millions of books across fantasy, sci-fi, horror, and adventure."
+      },
+      {
+        title: "Open Library - Free Digital Books",
+        url: "https://openlibrary.org",
+        tags: "books free library read online novels open library",
+        snippet: "An open, editable library catalog with millions of free books you can read online."
+      },
+      {
+        title: "Pigs - Fun Facts & Why Pigs Rule!",
+        url: "https://nationalgeographic.com",
+        tags: "pigs piglet pigsrule animals facts cute",
+        snippet: "Pigs are among the smartest animals on Earth—more intelligent than dogs and three-year-old human children!"
+      },
+      {
+        title: "Capybara Legends - Official Lore Archive",
+        url: "https://charlieblarsen-cloud.github.io/Pigsrule.com/",
+        tags: "capybara legends goorglefellae spiderbara cookabaras tazz xame",
+        snippet: "The epic mythic saga of Goorglefellae, Spiderbara, the disco-loving Cookabaras, and the demon Tazz Xame!"
       }
-    }
+    ];
 
     function runSearch(event) {
       event.preventDefault();
-      const query = document.getElementById('searchInput').value.trim();
+      const rawQuery = document.getElementById('searchInput').value.trim();
+      const query = rawQuery.toLowerCase();
+      const resultsArea = document.getElementById('resultsArea');
       if (!query) return;
 
       document.body.classList.add('has-results');
-      document.getElementById('resultsArea').innerHTML = '<div class="status-msg">🐷 Searching on Pigsrule.com...</div>';
 
-      const oldScript = document.getElementById('jsonpScript');
-      if (oldScript) oldScript.remove();
+      const matches = pigDatabase.filter(item =>
+        item.title.toLowerCase().includes(query) ||
+        item.tags.toLowerCase().includes(query) ||
+        item.snippet.toLowerCase().includes(query)
+      );
 
-      const script = document.createElement('script');
-      script.id = 'jsonpScript';
-      script.src = 'https://wikipedia.org' + encodeURIComponent(query) + '&srlimit=10&format=json&callback=showPigsruleResults';
-      document.body.appendChild(script);
+      let html = '';
+
+      if (matches.length > 0) {
+        matches.forEach(item => {
+          html += `
+            <div class="result-card">
+              <div class="result-url">${item.url}</div>
+              <a class="result-title" href="${item.url}" target="_blank" rel="noopener">${item.title}</a>
+              <p class="result-snippet">${item.snippet}</p>
+            </div>
+          `;
+        });
+      } else {
+        html += `
+          <div class="status-msg">
+            🐷 No built-in Pigsrule.com cards matched "<strong>${rawQuery}</strong>" yet!<br/>
+            <a class="web-btn" href="https://google.com{encodeURIComponent(rawQuery)}" target="_blank" rel="noopener">Search the Full Web for "${rawQuery}" &rarr;</a>
+          </div>
+        `;
+      }
+
+      resultsArea.innerHTML = html;
     }
   </script>
 
