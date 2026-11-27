@@ -214,21 +214,83 @@
       { category: "Custom Maps", title: "Fantasy Town Generator", url: "https://www.fantasytowngenerator.com", tags: "making custom maps fantasy town generator interactive characters factions buildings dnd", snippet: "Interactive fantasy settlement and map builder where you can customise towns, buildings, characters, factions, and daily routines." }
     ];
 
+     function triggerPigRain() {
+      for (let i = 0; i < 28; i++) {
+        const pig = document.createElement('div');
+        pig.className = 'falling-pig';
+        pig.textContent = '🐷';
+        pig.style.left = Math.random() * 96 + 'vw';
+        pig.style.animationDuration = (2 + Math.random() * 2.5) + 's';
+        pig.style.animationDelay = (Math.random() * 0.8) + 's';
+        document.body.appendChild(pig);
+        setTimeout(function() { pig.remove(); }, 5500);
+      }
+    }
+
     function runSearch(event) {
       if (event) event.preventDefault();
       const rawQuery = document.getElementById('searchInput').value.trim();
-      const words = rawQuery.toLowerCase().split(/\s+/);
+      const lowerQuery = rawQuery.toLowerCase();
+      const words = lowerQuery.split(/\s+/);
       const resultsArea = document.getElementById('resultsArea');
       if (!rawQuery) return false;
 
       document.body.classList.add('has-results');
+      let eggHtml = '';
+
+      // 1. DO A BARREL ROLL
+      if (lowerQuery.indexOf('barrel roll') !== -1 || lowerQuery === 'spin') {
+        const box = document.querySelector('.search-container');
+        box.classList.remove('do-spin');
+        void box.offsetWidth;
+        box.classList.add('do-spin');
+        eggHtml += '<div class="egg-banner">🌀 Wheeeee! Pigsrule.com did a barrel roll!</div>';
+      }
+
+      // 2. FLYING PIG RAIN
+      if (lowerQuery.indexOf('pig rain') !== -1 || lowerQuery === 'oink') {
+        triggerPigRain();
+        eggHtml += '<div class="egg-banner">🐷 OINK OINK! Incoming Pig Rain!</div>';
+      }
+
+      // 3. TARDIS TIME-VORTEX MODE
+      if (lowerQuery.indexOf('tardis') !== -1 || lowerQuery.indexOf('exterminate') !== -1) {
+        document.body.classList.remove('nox-mode', 'lumos-mode');
+        document.body.classList.add('tardis-mode');
+        eggHtml += '<div class="egg-banner">🛸 VWORP VWORP! TARDIS Time-Vortex Mode Activated! (Type "lumos" or "nox" to switch themes)</div>';
+      }
+
+      // 4. HOGWARTS SPELL MODE (LUMOS & NOX)
+      if (lowerQuery === 'lumos') {
+        document.body.classList.remove('nox-mode', 'tardis-mode');
+        document.body.classList.add('lumos-mode');
+        eggHtml += '<div class="egg-banner">🪄 LUMOS! Maximum wand brightness activated!</div>';
+      }
+      if (lowerQuery === 'nox') {
+        document.body.classList.remove('lumos-mode', 'tardis-mode');
+        document.body.classList.add('nox-mode');
+        eggHtml += '<div class="egg-banner">🌙 NOX! Dark Mode activated!</div>';
+      }
+
+      // 5. NATURAL 20 DICE ROLL
+      if (lowerQuery.indexOf('roll d20') !== -1 || lowerQuery.indexOf('nat 20') !== -1) {
+        const roll = Math.floor(Math.random() * 20) + 1;
+        if (roll === 20) {
+          triggerPigRain();
+          eggHtml += '<div class="egg-banner">🎲 You rolled a 20! CRITICAL HIT! Pigs Rule Forever!</div>';
+        } else if (roll === 1) {
+          eggHtml += '<div class="egg-banner">🎲 You rolled a 1... Critical Fail! Tazz Xame stole your dice!</div>';
+        } else {
+          eggHtml += '<div class="egg-banner">🎲 You rolled a ' + roll + ' on the D20!</div>';
+        }
+      }
 
       const matches = pigDatabase.filter(function(item) {
         const fullText = (item.category + ' ' + item.title + ' ' + item.tags + ' ' + item.snippet).toLowerCase();
         return words.every(function(word) { return fullText.indexOf(word) !== -1; });
       });
 
-      let html = '';
+      let html = eggHtml;
       if (matches.length > 0) {
         matches.forEach(function(item) {
           html += '<div class="result-card">' +
@@ -238,7 +300,7 @@
                     '<p class="result-snippet">' + item.snippet + '</p>' +
                   '</div>';
         });
-      } else {
+      } else if (!eggHtml) {
         html = '<div class="status-msg">' +
                  '🐷 No built-in cards matched "<strong>' + rawQuery + '</strong>" yet!<br/>' +
                  '<a class="web-btn" href="https://google.com' + encodeURIComponent(rawQuery) + '">Search the Full Web for "' + rawQuery + '" &rarr;</a>' +
