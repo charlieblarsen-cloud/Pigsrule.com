@@ -64,6 +64,50 @@
     .status-msg { text-align: center; font-size: 16px; font-weight: bold; color: #6b244b; padding: 20px; background: rgba(255, 255, 255, 0.85); border-radius: 16px; border: 2px solid #cc7a9f; }
     .web-btn { display: inline-block; margin-top: 12px; padding: 10px 18px; background-color: #b8296f; color: #ffffff; text-decoration: none; border-radius: 12px; font-weight: bold; }
     footer { margin-top: auto; padding-top: 30px; font-size: 14px; color: #6b244b; text-align: center; }
+    /* EASTER EGG STYLES */
+    @keyframes barrelRoll { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .do-spin { animation: barrelRoll 1.2s ease-in-out; }
+
+    @keyframes tardisPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.15; transform: scale(0.92); } }
+    body.tardis-mode { background: linear-gradient(135deg, #001f3f 0%, #003b6f 100%); color: #ffffff; }
+    body.tardis-mode h1 { color: #7fdbff; text-shadow: 2px 2px 0px #001f3f; }
+    body.tardis-mode .subtitle, body.tardis-mode footer { color: #bce8ff; }
+    body.tardis-mode .pig-icon { animation: tardisPulse 1.4s infinite; }
+
+    body.nox-mode { background: linear-gradient(135deg, #160c1f 0%, #2a1238 100%); color: #f5e6ff; }
+    body.nox-mode h1 { color: #ff79c6; text-shadow: 2px 2px 0px #160c1f; }
+    body.nox-mode .subtitle, body.nox-mode footer { color: #d8b4f8; }
+    body.nox-mode .search-container, body.nox-mode .result-card, body.nox-mode .status-msg { background-color: #241433; color: #f5e6ff; border-color: #923c99; }
+    body.nox-mode .result-snippet { color: #e9d5ff; }
+    body.nox-mode input[type="text"] { background-color: #160c1f; color: #ffffff; border-color: #923c99; }
+
+    body.lumos-mode { background: linear-gradient(135deg, #fffdf0 0%, #fff3b0 100%); }
+    body.lumos-mode .search-container { box-shadow: 0 0 40px 12px rgba(255, 223, 70, 0.85); border-color: #f5b700; }
+
+    .egg-banner {
+      background: linear-gradient(90deg, #ff69b4, #9b51e0);
+      color: #ffffff;
+      font-weight: bold;
+      text-align: center;
+      padding: 14px 20px;
+      border-radius: 16px;
+      border: 3px solid #ffffff;
+      box-shadow: 0 6px 18px rgba(184, 41, 111, 0.35);
+      font-size: 17px;
+    }
+
+    @keyframes pigFall {
+      0% { transform: translateY(-60px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(105vh) rotate(360deg); opacity: 0.9; }
+    }
+    .falling-pig {
+      position: fixed;
+      top: -50px;
+      font-size: 34px;
+      pointer-events: none;
+      z-index: 9999;
+      animation: pigFall linear forwards;
+    }
   </style>
 </head>
 <body>
