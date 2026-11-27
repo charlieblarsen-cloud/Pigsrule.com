@@ -54,32 +54,9 @@
       cursor: pointer;
     }
     button:hover { background-color: #b8296f; border-color: #7a1848; }
-    #resultsArea {
-      width: 100%;
-      max-width: 780px;
-      margin-top: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-    .result-card {
-      background-color: #ffffff;
-      padding: 18px 22px;
-      border-radius: 16px;
-      border: 3px solid #decaff;
-      box-shadow: 0 4px 12px rgba(184, 41, 111, 0.1);
-    }
-    .result-badge {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: bold;
-      text-transform: uppercase;
-      padding: 2px 8px;
-      border-radius: 8px;
-      background: #f3d9ff;
-      color: #6b244b;
-      margin-bottom: 6px;
-    }
+    #resultsArea { width: 100%; max-width: 780px; margin-top: 24px; display: flex; flex-direction: column; gap: 14px; }
+    .result-card { background-color: #ffffff; padding: 18px 22px; border-radius: 16px; border: 3px solid #decaff; box-shadow: 0 4px 12px rgba(184, 41, 111, 0.1); }
+    .result-badge { display: inline-block; font-size: 11px; font-weight: bold; text-transform: uppercase; padding: 2px 8px; border-radius: 8px; background: #f3d9ff; color: #6b244b; margin-bottom: 6px; }
     .result-url { font-size: 13px; color: #923c99; margin-bottom: 4px; word-break: break-all; }
     .result-title { font-size: 20px; font-weight: bold; color: #b8296f; text-decoration: none; display: inline-block; margin-bottom: 6px; }
     .result-title:hover { text-decoration: underline; }
@@ -89,20 +66,3 @@
     footer { margin-top: auto; padding-top: 30px; font-size: 14px; color: #6b244b; text-align: center; }
   </style>
 </head>
-<body>
-  <header>
-    <span class="pig-icon">🐷</span>
-    <h1 translate="no"><span>P</span><span>i</span><span>g</span><span>s</span><span>r</span><span>u</span><span>l</span><span>e</span><span>.</span><span>c</span><span>o</span><span>m</span></h1>
-    <div class="subtitle">Search Doctor Who, Poki, D&amp;D, Animals, Comics, Books, Harry Potter, Maps, Creative Apps &amp; More!</div>
-  </header>
-  <main class="search-container">
-    <form class="search-row" onsubmit="runSearch(event)">
-      <input type="text" id="searchInput" placeholder="Search anything on Pigsrule.com..." autofocus required />
-      <button type="submit">🔍 Search</button>
-    </form>
-  </main>
-  <section id="resultsArea"></section>
-  <footer>Powered by Pigsrule.com &bull; Built for Creators, Readers &amp; Gamers</footer>
-  <script src="data.js"></script>
-</body>
-</html>
