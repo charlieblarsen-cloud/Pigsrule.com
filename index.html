@@ -4,6 +4,51 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pigsrule.com - The Official Search Engine</title>
+   let currentDiceRoll = 1;
+
+    function rollThemeDice() {
+      const btn = document.getElementById('themeDiceBtn');
+      const face = document.getElementById('diceFace');
+      const label = document.getElementById('diceName');
+
+      // Pick a new number from 1 to 6 (never the same twice in a row)
+      let roll = Math.floor(Math.random() * 6) + 1;
+      while (roll === currentDiceRoll) {
+        roll = Math.floor(Math.random() * 6) + 1;
+      }
+      currentDiceRoll = roll;
+
+      // Trigger shake animation
+      btn.classList.remove('dice-rolling');
+      void btn.offsetWidth;
+      btn.classList.add('dice-rolling');
+
+      // Clear all existing themes
+      document.body.classList.remove('nox-mode', 'tardis-mode', 'lumos-mode', 'forest-mode', 'sunset-mode');
+
+      const diceFaces = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+      face.textContent = diceFaces[roll - 1];
+
+      if (roll === 1) {
+        label.textContent = '1: Classic Pink';
+      } else if (roll === 2) {
+        document.body.classList.add('nox-mode');
+        label.textContent = '2: Nox Dark';
+      } else if (roll === 3) {
+        document.body.classList.add('tardis-mode');
+        label.textContent = '3: TARDIS Blue';
+      } else if (roll === 4) {
+        document.body.classList.add('lumos-mode');
+        label.textContent = '4: Lumos Glow';
+      } else if (roll === 5) {
+        document.body.classList.add('forest-mode');
+        label.textContent = '5: Capybara Jungle';
+      } else if (roll === 6) {
+        document.body.classList.add('sunset-mode');
+        label.textContent = '6: Sunset Gold';
+      }
+    }
+  </script>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -107,6 +152,32 @@
       pointer-events: none;
       z-index: 9999;
       animation: pigFall linear forwards;
+      
+ /* 5: SCENIC TROPICAL JUNGLE BACKDROP */
+    body.forest-mode {
+      background-color: #0f3d24;
+      background-image:
+        radial-gradient(circle at 80% 15%, rgba(255, 248, 175, 0.35) 0%, transparent 45%),
+        radial-gradient(ellipse at 15% 100%, #1d6b3b 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 100%, #15572f 0%, transparent 60%),
+        linear-gradient(180deg, #1b5e35 0%, #0d3b20 55%, #072413 100%);
+      color: #e8ffe8;
+    }
+    body.forest-mode h1 { color: #9ef01a; text-shadow: 2px 3px 0px #062111; }
+    body.forest-mode .subtitle, body.forest-mode footer { color: #c7f9cc; text-shadow: 1px 1px 2px #062111; }
+    body.forest-mode .search-container { border-color: #52b788; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4); }
+
+    /* 6: SCENIC GOLDEN OCEAN SUNSET BACKDROP */
+    body.sunset-mode {
+      background-color: #2b1055;
+      background-image:
+        radial-gradient(circle at 50% 62%, #fff3b0 0%, #ff9e00 14%, #ff5400 28%, transparent 55%),
+        linear-gradient(180deg, #240046 0%, #7b2cbf 28%, #ff6d00 58%, #1d1e4e 62%, #0b132b 100%);
+      color: #fff3e6;
+    }
+    body.sunset-mode h1 { color: #ffd166; text-shadow: 2px 3px 0px #3c096c; }
+    body.sunset-mode .subtitle, body.sunset-mode footer { color: #ffe5d9; text-shadow: 1px 1px 3px #240046; }
+    body.sunset-mode .search-container { border-color: #ff9e00; box-shadow: 0 10px 28px rgba(36, 0, 70, 0.55); }
     }
   </style>
 </head>
