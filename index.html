@@ -67,8 +67,8 @@
       position: fixed !important;
       top: 16px !important;
       right: 16px !important;
-      width: 48px;
-      height: 48px;
+      width: 58px;
+      height: 58px;
       padding: 0;
       border: none;
       background: transparent;
@@ -215,6 +215,7 @@
         pig.style.animationDelay = (Math.random() * 0.8) + 's';
         document.body.appendChild(pig);
         setTimeout(function() { pig.remove(); }, 5500);
+        document.getElementById('diceFace').innerHTML = getSmoothDiceSVG(1);
       }
     }
 
