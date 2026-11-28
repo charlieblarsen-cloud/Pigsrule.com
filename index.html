@@ -63,22 +63,21 @@
     .result-snippet { font-size: 15px; color: #3a1226; line-height: 1.45; margin: 0; }
     .status-msg { text-align: center; font-size: 16px; font-weight: bold; color: #6b244b; padding: 20px; background: rgba(255, 255, 255, 0.85); border-radius: 16px; border: 2px solid #cc7a9f; }
     .web-btn { display: inline-block; margin-top: 12px; padding: 10px 18px; background-color: #b8296f; color: #ffffff; text-decoration: none; border-radius: 12px; font-weight: bold; }
-    theme-dice-btn {
-      position: fixed;
-      top: 16px;
-      right: 16px;
-      background-color: #ffffff;
-      color: #b8296f;
-      border: 3px solid #cc7a9f;
-      border-radius: 14px;
-      padding: 6px 10px;
-      font-size: 26px;
-      line-height: 1;
+     .theme-dice-btn {
+      position: fixed !important;
+      top: 16px !important;
+      right: 16px !important;
+      width: 48px;
+      height: 48px;
+      padding: 0;
+      border: none;
+      background: transparent;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(184, 41, 111, 0.25);
-      z-index: 1000;
-      transition: transform 0.2s;
+      z-index: 9999;
+      transition: transform 0.2s ease;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.28));
     }
+    .theme-dice-btn:hover { transform: scale(1.12); }
     @keyframes diceShake { 0%, 100% { transform: rotate(0deg) scale(1); } 25% { transform: rotate(-20deg) scale(1.15); } 50% { transform: rotate(20deg) scale(1.15); } 75% { transform: rotate(-15deg) scale(1.1); } }
     .dice-rolling { animation: diceShake 0.45s ease-in-out; }
     @keyframes barrelRoll { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -165,27 +164,47 @@
       { category: "Cooking", title: "BBC Good Food", url: "https://bbcgoodfood.com", tags: "cooking recipes baking cakes snacks", snippet: "Thousands of easy recipes for baking, snacks, and meals." }
     ];
 
-    let currentDiceRoll = 1;
+ let currentDiceRoll = 1;
+
+    function getSmoothDiceSVG(num) {
+      const pips = {
+        1: '<circle cx="50" cy="50" r="10" fill="#b8296f"/>',
+        2: '<circle cx="30" cy="30" r="9" fill="#b8296f"/><circle cx="70" cy="70" r="9" fill="#b8296f"/>',
+        3: '<circle cx="28" cy="28" r="8.5" fill="#b8296f"/><circle cx="50" cy="50" r="8.5" fill="#b8296f"/><circle cx="72" cy="72" r="8.5" fill="#b8296f"/>',
+        4: '<circle cx="30" cy="30" r="9" fill="#b8296f"/><circle cx="70" cy="30" r="9" fill="#b8296f"/><circle cx="30" cy="70" r="9" fill="#b8296f"/><circle cx="70" cy="70" r="9" fill="#b8296f"/>',
+        5: '<circle cx="28" cy="28" r="8.5" fill="#b8296f"/><circle cx="72" cy="28" r="8.5" fill="#b8296f"/><circle cx="50" cy="50" r="8.5" fill="#b8296f"/><circle cx="28" cy="72" r="8.5" fill="#b8296f"/><circle cx="72" cy="72" r="8.5" fill="#b8296f"/>',
+        6: '<circle cx="30" cy="25" r="8" fill="#b8296f"/><circle cx="70" cy="25" r="8" fill="#b8296f"/><circle cx="30" cy="50" r="8" fill="#b8296f"/><circle cx="70" cy="50" r="8" fill="#b8296f"/><circle cx="30" cy="75" r="8" fill="#b8296f"/><circle cx="70" cy="75" r="8" fill="#b8296f"/>'
+      };
+      return '<svg viewBox="0 0 100 100" width="46" height="46" xmlns="http://w3.org">' +
+             '<defs><linearGradient id="diceGrad" x1="0%" y1="0%" x2="100%" y2="100%">' +
+             '<stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#f3d9ff"/>' +
+             '</linearGradient></defs>' +
+             '<rect x="6" y="6" width="88" height="88" rx="22" fill="url(#diceGrad)" stroke="#cc7a9f" stroke-width="5"/>' +
+             pips[num] + '</svg>';
+    }
+
     function rollThemeDice() {
       const btn = document.getElementById('themeDiceBtn');
       const face = document.getElementById('diceFace');
       let roll = Math.floor(Math.random() * 6) + 1;
       while (roll === currentDiceRoll) { roll = Math.floor(Math.random() * 6) + 1; }
       currentDiceRoll = roll;
+
       btn.classList.remove('dice-rolling');
       void btn.offsetWidth;
       btn.classList.add('dice-rolling');
+
       document.body.classList.remove('nox-mode', 'tardis-mode', 'lumos-mode', 'forest-mode', 'sunset-mode');
-      const diceFaces = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
       const themeNames = ['1: Classic Pink', '2: Nox Dark', '3: TARDIS Blue', '4: Lumos Glow', '5: Capybara Jungle', '6: Sunset Gold'];
-      face.textContent = diceFaces[roll - 1];
+      face.innerHTML = getSmoothDiceSVG(roll);
       btn.title = themeNames[roll - 1];
+
       if (roll === 2) { document.body.classList.add('nox-mode'); }
       else if (roll === 3) { document.body.classList.add('tardis-mode'); }
       else if (roll === 4) { document.body.classList.add('lumos-mode'); }
       else if (roll === 5) { document.body.classList.add('forest-mode'); }
       else if (roll === 6) { document.body.classList.add('sunset-mode'); }
-    }
+    }    
     function triggerPigRain() {
       for (let i = 0; i < 28; i++) {
         const pig = document.createElement('div');
