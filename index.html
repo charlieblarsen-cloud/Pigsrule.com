@@ -4,51 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pigsrule.com - The Official Search Engine</title>
-   let currentDiceRoll = 1;
-
-    function rollThemeDice() {
-      const btn = document.getElementById('themeDiceBtn');
-      const face = document.getElementById('diceFace');
-      const label = document.getElementById('diceName');
-
-      // Pick a new number from 1 to 6 (never the same twice in a row)
-      let roll = Math.floor(Math.random() * 6) + 1;
-      while (roll === currentDiceRoll) {
-        roll = Math.floor(Math.random() * 6) + 1;
-      }
-      currentDiceRoll = roll;
-
-      // Trigger shake animation
-      btn.classList.remove('dice-rolling');
-      void btn.offsetWidth;
-      btn.classList.add('dice-rolling');
-
-      // Clear all existing themes
-      document.body.classList.remove('nox-mode', 'tardis-mode', 'lumos-mode', 'forest-mode', 'sunset-mode');
-
-      const diceFaces = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
-      face.textContent = diceFaces[roll - 1];
-
-      if (roll === 1) {
-        label.textContent = '1: Classic Pink';
-      } else if (roll === 2) {
-        document.body.classList.add('nox-mode');
-        label.textContent = '2: Nox Dark';
-      } else if (roll === 3) {
-        document.body.classList.add('tardis-mode');
-        label.textContent = '3: TARDIS Blue';
-      } else if (roll === 4) {
-        document.body.classList.add('lumos-mode');
-        label.textContent = '4: Lumos Glow';
-      } else if (roll === 5) {
-        document.body.classList.add('forest-mode');
-        label.textContent = '5: Capybara Jungle';
-      } else if (roll === 6) {
-        document.body.classList.add('sunset-mode');
-        label.textContent = '6: Sunset Gold';
-      }
-    }
-  </script>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -87,7 +42,7 @@
       border-radius: 14px;
       outline: none;
     }
-    button {
+    button[type="submit"] {
       padding: 14px 24px;
       font-size: 18px;
       font-weight: bold;
@@ -98,8 +53,8 @@
       border-radius: 14px;
       cursor: pointer;
     }
-    button:hover { background-color: #b8296f; border-color: #7a1848; }
-    #resultsArea { width: 100%; max-width: 780px; margin-top: 24px; display: flex; flex-direction: column; gap: 14px; }
+    button[type="submit"]:hover { background-color: #b8296f; border-color: #7a1848; }
+     #resultsArea { width: 100%; max-width: 780px; margin-top: 24px; display: flex; flex-direction: column; gap: 14px; }
     .result-card { background-color: #ffffff; padding: 18px 22px; border-radius: 16px; border: 3px solid #decaff; box-shadow: 0 4px 12px rgba(184, 41, 111, 0.1); }
     .result-badge { display: inline-block; font-size: 11px; font-weight: bold; text-transform: uppercase; padding: 2px 8px; border-radius: 8px; background: #f3d9ff; color: #6b244b; margin-bottom: 6px; }
     .result-url { font-size: 13px; color: #923c99; margin-bottom: 4px; word-break: break-all; }
@@ -108,80 +63,44 @@
     .result-snippet { font-size: 15px; color: #3a1226; line-height: 1.45; margin: 0; }
     .status-msg { text-align: center; font-size: 16px; font-weight: bold; color: #6b244b; padding: 20px; background: rgba(255, 255, 255, 0.85); border-radius: 16px; border: 2px solid #cc7a9f; }
     .web-btn { display: inline-block; margin-top: 12px; padding: 10px 18px; background-color: #b8296f; color: #ffffff; text-decoration: none; border-radius: 12px; font-weight: bold; }
-    footer { margin-top: auto; padding-top: 30px; font-size: 14px; color: #6b244b; text-align: center; }
-    /* EASTER EGG STYLES */
+    .theme-dice-btn { position: fixed; top: 18px; right: 18px; background-color: #ffffff; color: #b8296f; border: 3px solid #cc7a9f; border-radius: 16px; padding: 8px 14px; font-size: 24px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 12px rgba(184, 41, 111, 0.25); z-index: 1000; display: flex; align-items: center; gap: 6px; transition: transform 0.2s; }
+    .theme-dice-btn:hover { transform: scale(1.08); background-color: #fff0f7; }
+    .dice-label { font-size: 13px; color: #6b244b; }
+    @keyframes diceShake { 0%, 100% { transform: rotate(0deg) scale(1); } 25% { transform: rotate(-20deg) scale(1.15); } 50% { transform: rotate(20deg) scale(1.15); } 75% { transform: rotate(-15deg) scale(1.1); } }
+    .dice-rolling { animation: diceShake 0.45s ease-in-out; }
     @keyframes barrelRoll { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     .do-spin { animation: barrelRoll 1.2s ease-in-out; }
-
     @keyframes tardisPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.15; transform: scale(0.92); } }
     body.tardis-mode { background: linear-gradient(135deg, #001f3f 0%, #003b6f 100%); color: #ffffff; }
     body.tardis-mode h1 { color: #7fdbff; text-shadow: 2px 2px 0px #001f3f; }
     body.tardis-mode .subtitle, body.tardis-mode footer { color: #bce8ff; }
     body.tardis-mode .pig-icon { animation: tardisPulse 1.4s infinite; }
-
     body.nox-mode { background: linear-gradient(135deg, #160c1f 0%, #2a1238 100%); color: #f5e6ff; }
     body.nox-mode h1 { color: #ff79c6; text-shadow: 2px 2px 0px #160c1f; }
     body.nox-mode .subtitle, body.nox-mode footer { color: #d8b4f8; }
     body.nox-mode .search-container, body.nox-mode .result-card, body.nox-mode .status-msg { background-color: #241433; color: #f5e6ff; border-color: #923c99; }
     body.nox-mode .result-snippet { color: #e9d5ff; }
     body.nox-mode input[type="text"] { background-color: #160c1f; color: #ffffff; border-color: #923c99; }
-
     body.lumos-mode { background: linear-gradient(135deg, #fffdf0 0%, #fff3b0 100%); }
     body.lumos-mode .search-container { box-shadow: 0 0 40px 12px rgba(255, 223, 70, 0.85); border-color: #f5b700; }
-
-    .egg-banner {
-      background: linear-gradient(90deg, #ff69b4, #9b51e0);
-      color: #ffffff;
-      font-weight: bold;
-      text-align: center;
-      padding: 14px 20px;
-      border-radius: 16px;
-      border: 3px solid #ffffff;
-      box-shadow: 0 6px 18px rgba(184, 41, 111, 0.35);
-      font-size: 17px;
-    }
-
-    @keyframes pigFall {
-      0% { transform: translateY(-60px) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(105vh) rotate(360deg); opacity: 0.9; }
-    }
-    .falling-pig {
-      position: fixed;
-      top: -50px;
-      font-size: 34px;
-      pointer-events: none;
-      z-index: 9999;
-      animation: pigFall linear forwards;
-      
- /* 5: SCENIC TROPICAL JUNGLE BACKDROP */
-    body.forest-mode {
-      background-color: #0f3d24;
-      background-image:
-        radial-gradient(circle at 80% 15%, rgba(255, 248, 175, 0.35) 0%, transparent 45%),
-        radial-gradient(ellipse at 15% 100%, #1d6b3b 0%, transparent 55%),
-        radial-gradient(ellipse at 85% 100%, #15572f 0%, transparent 60%),
-        linear-gradient(180deg, #1b5e35 0%, #0d3b20 55%, #072413 100%);
-      color: #e8ffe8;
-    }
+     body.forest-mode { background-color: #0f3d24; background-image: radial-gradient(circle at 80% 15%, rgba(255, 248, 175, 0.35) 0%, transparent 45%), radial-gradient(ellipse at 15% 100%, #1d6b3b 0%, transparent 55%), radial-gradient(ellipse at 85% 100%, #15572f 0%, transparent 60%), linear-gradient(180deg, #1b5e35 0%, #0d3b20 55%, #072413 100%); color: #e8ffe8; }
     body.forest-mode h1 { color: #9ef01a; text-shadow: 2px 3px 0px #062111; }
     body.forest-mode .subtitle, body.forest-mode footer { color: #c7f9cc; text-shadow: 1px 1px 2px #062111; }
     body.forest-mode .search-container { border-color: #52b788; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4); }
-
-    /* 6: SCENIC GOLDEN OCEAN SUNSET BACKDROP */
-    body.sunset-mode {
-      background-color: #2b1055;
-      background-image:
-        radial-gradient(circle at 50% 62%, #fff3b0 0%, #ff9e00 14%, #ff5400 28%, transparent 55%),
-        linear-gradient(180deg, #240046 0%, #7b2cbf 28%, #ff6d00 58%, #1d1e4e 62%, #0b132b 100%);
-      color: #fff3e6;
-    }
+    body.sunset-mode { background-color: #2b1055; background-image: radial-gradient(circle at 50% 62%, #fff3b0 0%, #ff9e00 14%, #ff5400 28%, transparent 55%), linear-gradient(180deg, #240046 0%, #7b2cbf 28%, #ff6d00 58%, #1d1e4e 62%, #0b132b 100%); color: #fff3e6; }
     body.sunset-mode h1 { color: #ffd166; text-shadow: 2px 3px 0px #3c096c; }
     body.sunset-mode .subtitle, body.sunset-mode footer { color: #ffe5d9; text-shadow: 1px 1px 3px #240046; }
     body.sunset-mode .search-container { border-color: #ff9e00; box-shadow: 0 10px 28px rgba(36, 0, 70, 0.55); }
-    }
+    .egg-banner { background: linear-gradient(90deg, #ff69b4, #9b51e0); color: #ffffff; font-weight: bold; text-align: center; padding: 14px 20px; border-radius: 16px; border: 3px solid #ffffff; box-shadow: 0 6px 18px rgba(184, 41, 111, 0.35); font-size: 17px; }
+    @keyframes pigFall { 0% { transform: translateY(-60px) rotate(0deg); opacity: 1; } 100% { transform: translateY(105vh) rotate(360deg); opacity: 0.9; } }
+    .falling-pig { position: fixed; top: -50px; font-size: 34px; pointer-events: none; z-index: 9999; animation: pigFall linear forwards; }
   </style>
 </head>
 <body>
+  <button type="button" id="themeDiceBtn" class="theme-dice-btn" onclick="rollThemeDice()" title="Roll the Theme Dice!">
+    <span id="diceFace">🎲</span>
+    <span id="diceName" class="dice-label">Roll Theme</span>
+  </button>
   <header>
     <span class="pig-icon">🐷</span>
     <h1 translate="no"><span>P</span><span>i</span><span>g</span><span>s</span><span>r</span><span>u</span><span>l</span><span>e</span><span>.</span><span>c</span><span>o</span><span>m</span></h1>
@@ -195,31 +114,18 @@
   </main>
   <section id="resultsArea"></section>
   <footer>Powered by Pigsrule.com &bull; Built for Creators, Readers &amp; Gamers</footer>
-
   <script>
     const pigDatabase = [
-      { category: "Doctor Who", title: "Doctor Who Official Website", url: "https://doctorwho.tv", tags: "dr who doctor who drwho tardis dalek cybermen bbc sci fi", snippet: "Official home of Doctor Who! Episodes, Doctors, companions, and monsters." },
-      { category: "Doctor Who", title: "The Doctor Who Site", url: "https://thedoctorwhosite.co.uk", tags: "dr who doctor who drwho tardis dalek cybermen bbc sci fi", snippet: "Official home of Doctor Who! Episodes, Doctors, companions, and monsters." },
-      { category: "Doctor Who", title: "Doctor Who Magazine", url: "https://doctorwhomagazine.com", tags: "dr who doctor who drwho magazine news interviews", snippet: "The official magazine of Doctor Who with behind-the-scenes news and interviews." },
-      { category: "Doctor Who", title: "Radio Times Doctor Who Hub", url: "https://radiotimes.com", tags: "dr who doctor who drwho news episodes cast", snippet: "Latest Doctor Who episode guides, trailers, and cast updates." },
-      { category: "Poki", title: "Miniclip Games", url: "https://miniclip.com", tags: "poki miniclip browser games free online play", snippet: "Classic free online multiplayer and arcade games." },
-      { category: "Poki", title: "Armor Games", url: "https://armorgames.com", tags: "poki armor games indie browser strategy adventure", snippet: "Thousands of free indie strategy, RPG, and puzzle browser games." },
-      { category: "D&D", title: "Dungeon Masters Guild", url: "https://dmsguild.com", tags: "d and d dandd d&d dnd dungeons and dragons adventures homebrew", snippet: "Download fan-made D&D adventures, maps, and character subclasses." },
-      { category: "D&D", title: "Critical Role", url: "https://critrole.com", tags: "d and d dandd d&d dnd dungeons and dragons critical role campaign", snippet: "Watch epic Dungeons & Dragons campaigns and explore Exandria lore." },
-      { category: "All Animals", title: "WWF Wildlife Species Directory", url: "https://worldwildlife.org", tags: "all animals wildlife endangered tigers pandas elephants", snippet: "Learn about endangered animals, habitats, and wildlife conservation." },
-      { category: "Comics", title: "Dark Horse Comics", url: "https://darkhorse.com", tags: "comics graphic novels hellboy stranger things star wars", snippet: "Independent comics and graphic novels across sci-fi, horror, and fantasy." },
-      { category: "Comics", title: "Tapas Comics & Novels", url: "https://tapas.io", tags: "comics webcomics fantasy romance sci fi read online", snippet: "Bite-sized digital comics and web novels created by independent artists." },
-      { category: "All Animals", title: "RSPCA Animal Care & Facts", url: "https://rspca.org.uk", tags: "all animals pets pigs dogs cats rabbits wildlife", snippet: "Guides and facts about caring for pets, farm animals, and British wildlife." },
+      { category: "Doctor Who", title: "Doctor Who Official Website", url: "https://doctorwho.tv", tags: "dr who doctor who drwho official site website tardis dalek cybermen bbc sci fi", snippet: "Official home of Doctor Who! Episodes, Doctors, companions, and monsters." },
       { category: "Doctor Who", title: "TARDIS Wiki", url: "https://tardis.wiki", tags: "dr who doctor who drwho tardis wiki lore dalek gallifrey", snippet: "Massive encyclopedia covering every Doctor Who episode, character, and alien." },
       { category: "Doctor Who", title: "Big Finish Doctor Who Audio", url: "https://bigfinish.com", tags: "dr who doctor who audio stories big finish", snippet: "Full-cast Doctor Who audio adventures starring the original Doctors." },
-      { category: "Games & Poki", title: "Poki - Free Online Games", url: "https://poki.com", tags: "poki video games play online browser games free", snippet: "Play thousands of free online games instantly in your browser on Poki." },
-      { category: "Video Games", title: "IGN Gaming", url: "https://ign.com", tags: "video games ign reviews gaming nintendo playstation xbox pc", snippet: "Latest video game reviews, trailers, walkthroughs, and gaming news." },
-      { category: "Video Games", title: "Steam Store", url: "https://steampowered.com", tags: "steam pc video games gaming store", snippet: "Discover, play, and discuss thousands of PC video games." },
-      { category: "Video Games", title: "Nintendo Life", url: "https://nintendolife.com", tags: "nintendo switch video games mario zelda gaming", snippet: "Latest Nintendo Switch news, game reviews, and features." },
+      { category: "Poki", title: "Poki - Free Online Games", url: "https://poki.com", tags: "poki video games play online browser games free", snippet: "Play thousands of free online games instantly in your browser on Poki." },
+      { category: "Poki", title: "CrazyGames", url: "https://crazygames.com", tags: "poki crazygames browser games play online free", snippet: "Play free online browser games across action, puzzle, and adventure." },
       { category: "D&D", title: "D&D Beyond", url: "https://dndbeyond.com", tags: "d and d dandd d&d dnd dungeons and dragons character builder spells", snippet: "Official digital toolset and character builder for Dungeons & Dragons." },
       { category: "D&D", title: "Roll20 Virtual Tabletop", url: "https://roll20.net", tags: "d and d dandd d&d dnd dungeons and dragons tabletop maps", snippet: "Play Dungeons & Dragons online with digital battle maps and dice rollers." },
       { category: "All Animals", title: "National Geographic Animals", url: "https://nationalgeographic.com", tags: "all animals wildlife mammals birds reptiles ocean sharks pigs capybara", snippet: "Facts, photos, and habitats for every animal species on Earth." },
       { category: "All Animals", title: "San Diego Zoo Animals", url: "https://sandiegozoo.org", tags: "all animals zoo wildlife mammals amphibians insects", snippet: "Huge encyclopedia of animals organized by species, habitat, and diet." },
+      { category: "All Animals", title: "Capybara Legends Lore", url: "#capybara-legends", tags: "all animals capybara legends goorglefellae spiderbara cookabaras tazz xame poshos", snippet: "The mythic saga of Goorglefellae, Spiderbara, the disco-loving Cookabaras, and Tazz Xame!" },
       { category: "Comics", title: "Marvel Comics", url: "https://marvel.com", tags: "comics superheroes spider-man avengers x-men graphic novels", snippet: "Explore Marvel Comics characters, series, and graphic novels." },
       { category: "Comics", title: "DC Comics", url: "https://dc.com", tags: "comics batman superman wonder woman graphic novels", snippet: "Discover DC Comics, graphic novels, and superhero universes." },
       { category: "Comics", title: "WEBTOON Comics", url: "https://webtoons.com", tags: "comics webtoon manga graphic novels fantasy sci fi", snippet: "Read thousands of free creator-owned comics and manga online." },
@@ -232,60 +138,42 @@
       { category: "Movies & TV Shows", title: "Rotten Tomatoes", url: "https://rottentomatoes.com", tags: "movies tv shows tvshows reviews ratings cinema", snippet: "Check critic and audience scores for movies and TV series." },
       { category: "School Subjects", title: "BBC Bitesize", url: "https://bbc.co.uk", tags: "all school subjects maths english science history geography computing revision", snippet: "Free study guides and quizzes for every school subject." },
       { category: "School Subjects", title: "Khan Academy", url: "https://khanacademy.org", tags: "all school subjects math science computing history grammar", snippet: "Free lessons and practice in maths, science, computing, and history." },
+      { category: "Custom Maps", title: "Fantasy Town Generator", url: "https://fantasytowngenerator.com", tags: "making custom maps fantasy town generator interactive characters factions buildings dnd", snippet: "Interactive fantasy settlement and map builder where you can customise towns, buildings, characters, and factions." },
       { category: "Custom Maps", title: "Inkarnate Map Maker", url: "https://inkarnate.com", tags: "making custom maps fantasy worldbuilding map maker dnd", snippet: "Create custom fantasy world maps, continents, and battle maps." },
-      { category: "Custom Maps", title: "Azgaar Fantasy Map Generator", url: "https://github.io", tags: "making custom maps fantasy world generator kingdoms", snippet: "Free procedural fantasy world map generator." },
       { category: "Creative Apps", title: "Adobe Creative Cloud", url: "https://adobe.com", tags: "creativity creative apps adobe photoshop illustrator premiere design", snippet: "Adobe apps for photo editing, illustration, video, and animation." },
       { category: "Creative Apps", title: "Photopea Editor", url: "https://photopea.com", tags: "creativity creative apps adobe photoshop alternative free editor", snippet: "Free browser-based photo editor that works like Adobe Photoshop." },
       { category: "Creative Apps", title: "Canva Design Studio", url: "https://canva.com", tags: "creativity creative apps design posters book covers logos free", snippet: "Design book covers, posters, logos, and comics for free." },
-      { category: "Creative Apps", title: "Blender 3D", url: "https://blender.org", tags: "creativity creative apps 3d modeling animation free", snippet: "Free 3D creation software for modeling, animation, and game assets." },
+      { category: "Video Games", title: "Minecraft Official Site", url: "https://minecraft.net", tags: "video games minecraft blocks survival creative mojang", snippet: "Explore infinite worlds and build anything you can imagine in Minecraft." },
+      { category: "Video Games", title: "Roblox", url: "https://roblox.com", tags: "video games roblox play create multiplayer games", snippet: "Play millions of community-made games or build your own in Roblox Studio." },
       { category: "Space & NASA", title: "NASA Space Exploration", url: "https://nasa.gov", tags: "space nasa planets stars galaxies rockets astronomy", snippet: "Explore planets, black holes, Mars rovers, and space missions." },
       { category: "Coding", title: "Scratch Game Creator", url: "https://mit.edu", tags: "coding programming game dev scratch animations creative", snippet: "Code your own interactive games, stories, and animations." },
       { category: "Music", title: "BandLab Music Studio", url: "https://bandlab.com", tags: "music audio beats sound effects songs creative", snippet: "Make music and create soundtracks online for free." },
-      { category: "Art & Drawing", title: "Kleki Painting Tool", url: "https://kleki.com", tags: "art drawing painting sketching digital art", snippet: "Draw and paint digital artwork in your browser." },
-      { category: "Myths & Legends", title: "Mythopedia", url: "https://mythopedia.com", tags: "myths legends gods monsters folklore greek norse egyptian", snippet: "Discover ancient gods, legendary monsters, and creation myths." },
-      { category: "History", title: "National Geographic History", url: "https://nationalgeographic.com", tags: "history ancient egypt rome medieval archaeology", snippet: "Uncover lost civilizations and world history." },
-      { category: "Board Games", title: "BoardGameGeek", url: "https://boardgamegeek.com", tags: "board games tabletop card games strategy", snippet: "Database of board games, card games, and reviews." },
-      { category: "Science", title: "Science Buddies", url: "https://sciencebuddies.org", tags: "science experiments chemistry physics biology", snippet: "Hands-on science experiments and engineering builds." },
-      { category: "Geography", title: "GeoGuessr", url: "https://geoguessr.com", tags: "geography countries flags world travel maps", snippet: "Test your knowledge of world countries and landmarks." },
-      { category: "Cooking", title: "BBC Good Food", url: "https://bbcgoodfood.com", tags: "cooking baking recipes food cakes snacks", snippet: "Thousands of easy recipes for baking, snacks, and meals." },
-      { category: "Books", title: "BookTrust - Best Kids & Teen Books", url: "https://booktrust.org.uk", tags: "books reading recommendations fantasy adventure teen", snippet: "Book lists, author interviews, and reading recommendations for all ages." },
-      { category: "Harry Potter", title: "MuggleNet - Harry Potter Fan Site", url: "https://mugglenet.com", tags: "harry potter harrypotter mugglenet hogwarts news podcasts", snippet: "The world's longest-running Harry Potter news, theories, and fan community." },
-      { category: "Harry Potter", title: "The Leaky Cauldron", url: "http://the-leaky-cauldron.org", tags: "harry potter harrypotter hogwarts wizarding news", snippet: "Wizarding World news, book discussions, and fan essays." },
-      { category: "Books", title: "Project Gutenberg - Free Classic Books", url: "https://gutenberg.org", tags: "books free ebooks classics sherlock holmes dracula", snippet: "Over 70,000 free classic eBooks you can read right in your browser." },
-      { category: "Movies & TV Shows", title: "Letterboxd - Film Discovery & Lists", url: "https://letterboxd.com", tags: "movies films reviews watchlist cinema", snippet: "Track the movies you watch, read reviews, and discover film lists." },
-      { category: "Movies & TV Shows", title: "Empire Magazine - Movie News", url: "https://empireonline.com", tags: "movies tv shows tvshows reviews trailers sci fi", snippet: "Movie reviews, exclusive trailers, and sci-fi film news." },
-      { category: "School Subjects", title: "Seneca Learning", url: "https://senecalearning.com", tags: "all school subjects revision maths science history geography", snippet: "Interactive revision courses and memory quizzes for every school subject." },
-      { category: "School Subjects", title: "National Geographic Kids", url: "https://nationalgeographic.com", tags: "all school subjects science geography animals history quizzes", snippet: "Fun facts, homework help, and quizzes about animals, science, and geography." },
-      { category: "Custom Maps", title: "Dungeon Scrawl - D&D Battle Map Maker", url: "https://dungeonscrawl.com", tags: "making custom maps dungeons dnd battle maps free", snippet: "Free browser tool for drawing crisp dungeon and cavern battle maps." },
-      { category: "Custom Maps", title: "Watabou's Medieval Fantasy City Generator", url: "https://itch.io", tags: "making custom maps city generator towns fantasy", snippet: "Instantly generate custom medieval fantasy city and town maps." },
-      { category: "Creative Apps", title: "Krita - Free Digital Painting App", url: "https://krita.org", tags: "creativity creative apps drawing painting comics animation free", snippet: "Professional free open-source painting program made for concept art and comics." },
-      { category: "Video Games", title: "Minecraft Official Site", url: "https://minecraft.net", tags: "video games minecraft blocks survival creative mojang", snippet: "Explore infinite worlds and build anything you can imagine in Minecraft." },
-      { category: "Video Games", title: "Roblox", url: "https://roblox.com", tags: "video games roblox play create multiplayer games", snippet: "Play millions of community-made games or build your own in Roblox Studio." },
-      { category: "Space & NASA", title: "Space.com", url: "https://space.com", tags: "space nasa astronomy planets rockets telescopes", snippet: "Latest space exploration news, night sky guides, and astronomy discoveries." },
-      { category: "Space & NASA", title: "NASA Eyes on the Solar System", url: "https://nasa.gov", tags: "space nasa 3d solar system planets moons", snippet: "Interactive 3D visualization of planets, moons, and spacecraft in real time." },
-      { category: "Coding", title: "MakeCode Arcade", url: "https://makecode.com", tags: "coding programming retro games pixel art arcade", snippet: "Build retro arcade games using blocks or JavaScript in your browser." },
-      { category: "Coding", title: "Replit Online Code Editor", url: "https://replit.com", tags: "coding python html javascript websites apps", snippet: "Write, run, and host websites and code projects right in your browser." },
-      { category: "Music", title: "Incredibox", url: "https://incredibox.com", tags: "music beatbox mix beats sound creative", snippet: "Create cool beatbox music mixes with an animated crew of singers." },
-      { category: "Music", title: "Soundtrap Online Studio", url: "https://soundtrap.com", tags: "music recording beats podcasts audio studio", snippet: "Record music, make beats, and collaborate on songs online." },
-      { category: "Art & Drawing", title: "Tate Kids - Art Games & Quizzes", url: "https://tate.org.uk", tags: "art drawing painting famous artists crafts", snippet: "Explore famous artists, play art games, and try creative projects." },
-      { category: "Art & Drawing", title: "Quick, Draw! by Google", url: "https://withgoogle.com", tags: "art drawing doodling ai game fun", snippet: "A fast-paced doodling game where an AI tries to guess what you draw." },
-      { category: "Myths & Legends", title: "Gods and Monsters", url: "https://gods-and-monsters.com", tags: "myths legends dragons monsters greek norse", snippet: "Stories and facts about mythical creatures, dragons, and ancient gods." },
-      { category: "Myths & Legends", title: "Norse Mythology for Smart People", url: "https://norse-mythology.org", tags: "myths legends norse thor odin loki vikings", snippet: "Comprehensive guide to Norse gods, giants, runes, and Viking myths." },
       { category: "History", title: "Horrible Histories (CBBC)", url: "https://bbc.co.uk", tags: "history funny songs quizzes romans vikings tudors", snippet: "Hilarious history sketches, songs, and quizzes from the Stone Age to modern times." },
-      { category: "History", title: "British Museum Collection", url: "https://britishmuseum.org", tags: "history artifacts egypt mummies ancient world", snippet: "Explore two million years of human history, artifacts, and Egyptian mummies." },
-      { category: "Board Games", title: "Lichess - Free Online Chess", url: "https://lichess.org", tags: "board games chess free puzzles strategy", snippet: "Play free, ad-free chess games and solve tactics puzzles instantly." },
-      { category: "Board Games", title: "CardGames.io", url: "https://cardgames.io", tags: "board games card games solitaire hearts checkers", snippet: "Play classic card and board games like Chess, Checkers, and Solitaire free." },
-      { category: "Science", title: "HowStuffWorks", url: "https://howstuffworks.com", tags: "science how things work technology space nature", snippet: "Clear explanations of how machines, nature, and science work." },
-      { category: "Science", title: "PhET Interactive Science Simulations", url: "https://colorado.edu", tags: "science physics chemistry circuits gravity simulations", snippet: "Free interactive science and maths simulations you can experiment with." },
-      { category: "Geography", title: "WorldAtlas", url: "https://worldatlas.com", tags: "geography maps countries oceans mountains flags", snippet: "Detailed maps, country facts, flags, and world geography guides." },
-      { category: "Geography", title: "Google Earth", url: "https://google.com", tags: "geography 3d globe satellite maps explore world", snippet: "Fly anywhere on Earth in 3D and explore cities, mountains, and landmarks." },
-      { category: "Cooking", title: "BBC Food", url: "https://bbc.co.uk", tags: "cooking recipes baking cakes dinners chefs", snippet: "Thousands of tested recipes and cooking techniques from BBC chefs." },
-      { category: "Cooking", title: "SuperCook - Recipe Search by Ingredients", url: "https://supercook.com", tags: "cooking recipes ingredients fridge meals baking", snippet: "Enter the ingredients you have in your kitchen and find recipes you can make right now." },
-      { category: "Creative Apps", title: "GIMP - Free Image Editor", url: "https://gimp.org", tags: "creativity creative apps adobe photoshop alternative photo editor free", snippet: "Free desktop image manipulation and graphic design software." },
-      { category: "Custom Maps", title: "Fantasy Town Generator", url: "https://www.fantasytowngenerator.com", tags: "making custom maps fantasy town generator interactive characters factions buildings dnd", snippet: "Interactive fantasy settlement and map builder where you can customise towns, buildings, characters, factions, and daily routines." }
+      { category: "Cooking", title: "BBC Good Food", url: "https://bbcgoodfood.com", tags: "cooking recipes baking cakes snacks", snippet: "Thousands of easy recipes for baking, snacks, and meals." }
     ];
 
-     function triggerPigRain() {
+    let currentDiceRoll = 1;
+    function rollThemeDice() {
+      const btn = document.getElementById('themeDiceBtn');
+      const face = document.getElementById('diceFace');
+      const label = document.getElementById('diceName');
+      let roll = Math.floor(Math.random() * 6) + 1;
+      while (roll === currentDiceRoll) { roll = Math.floor(Math.random() * 6) + 1; }
+      currentDiceRoll = roll;
+      btn.classList.remove('dice-rolling');
+      void btn.offsetWidth;
+      btn.classList.add('dice-rolling');
+      document.body.classList.remove('nox-mode', 'tardis-mode', 'lumos-mode', 'forest-mode', 'sunset-mode');
+      const diceFaces = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+      face.textContent = diceFaces[roll - 1];
+      if (roll === 1) { label.textContent = '1: Classic Pink'; }
+      else if (roll === 2) { document.body.classList.add('nox-mode'); label.textContent = '2: Nox Dark'; }
+      else if (roll === 3) { document.body.classList.add('tardis-mode'); label.textContent = '3: TARDIS Blue'; }
+      else if (roll === 4) { document.body.classList.add('lumos-mode'); label.textContent = '4: Lumos Glow'; }
+      else if (roll === 5) { document.body.classList.add('forest-mode'); label.textContent = '5: Capybara Jungle'; }
+      else if (roll === 6) { document.body.classList.add('sunset-mode'); label.textContent = '6: Sunset Gold'; }
+    }
+    function triggerPigRain() {
       for (let i = 0; i < 28; i++) {
         const pig = document.createElement('div');
         pig.className = 'falling-pig';
@@ -305,77 +193,53 @@
       const words = lowerQuery.split(/\s+/);
       const resultsArea = document.getElementById('resultsArea');
       if (!rawQuery) return false;
-
       document.body.classList.add('has-results');
       let eggHtml = '';
-
-      // 1. DO A BARREL ROLL
       if (lowerQuery.indexOf('barrel roll') !== -1 || lowerQuery === 'spin') {
         const box = document.querySelector('.search-container');
-        box.classList.remove('do-spin');
-        void box.offsetWidth;
-        box.classList.add('do-spin');
+        box.classList.remove('do-spin'); void box.offsetWidth; box.classList.add('do-spin');
         eggHtml += '<div class="egg-banner">🌀 Wheeeee! Pigsrule.com did a barrel roll!</div>';
       }
-
-      // 2. FLYING PIG RAIN
       if (lowerQuery.indexOf('pig rain') !== -1 || lowerQuery === 'oink') {
         triggerPigRain();
         eggHtml += '<div class="egg-banner">🐷 OINK OINK! Incoming Pig Rain!</div>';
       }
-
-      // 3. TARDIS TIME-VORTEX MODE
       if (lowerQuery.indexOf('tardis') !== -1 || lowerQuery.indexOf('exterminate') !== -1) {
-        document.body.classList.remove('nox-mode', 'lumos-mode');
+        document.body.classList.remove('nox-mode', 'lumos-mode', 'forest-mode', 'sunset-mode');
         document.body.classList.add('tardis-mode');
-        eggHtml += '<div class="egg-banner">🛸 VWORP VWORP! TARDIS Time-Vortex Mode Activated! (Type "lumos" or "nox" to switch themes)</div>';
+        eggHtml += '<div class="egg-banner">🛸 VWORP VWORP! TARDIS Time-Vortex Mode Activated!</div>';
       }
-
-      // 4. HOGWARTS SPELL MODE (LUMOS & NOX)
       if (lowerQuery === 'lumos') {
-        document.body.classList.remove('nox-mode', 'tardis-mode');
+        document.body.classList.remove('nox-mode', 'tardis-mode', 'forest-mode', 'sunset-mode');
         document.body.classList.add('lumos-mode');
         eggHtml += '<div class="egg-banner">🪄 LUMOS! Maximum wand brightness activated!</div>';
       }
       if (lowerQuery === 'nox') {
-        document.body.classList.remove('lumos-mode', 'tardis-mode');
+        document.body.classList.remove('lumos-mode', 'tardis-mode', 'forest-mode', 'sunset-mode');
         document.body.classList.add('nox-mode');
         eggHtml += '<div class="egg-banner">🌙 NOX! Dark Mode activated!</div>';
       }
-
-      // 5. NATURAL 20 DICE ROLL
+      if (lowerQuery === 'default' || lowerQuery === 'reset' || lowerQuery === 'normal') {
+        document.body.classList.remove('nox-mode', 'lumos-mode', 'tardis-mode', 'forest-mode', 'sunset-mode');
+        eggHtml += '<div class="egg-banner">🐷 Classic Pink & Purple Theme Restored!</div>';
+      }
       if (lowerQuery.indexOf('roll d20') !== -1 || lowerQuery.indexOf('nat 20') !== -1) {
         const roll = Math.floor(Math.random() * 20) + 1;
-        if (roll === 20) {
-          triggerPigRain();
-          eggHtml += '<div class="egg-banner">🎲 You rolled a 20! CRITICAL HIT! Pigs Rule Forever!</div>';
-        } else if (roll === 1) {
-          eggHtml += '<div class="egg-banner">🎲 You rolled a 1... Critical Fail! Tazz Xame stole your dice!</div>';
-        } else {
-          eggHtml += '<div class="egg-banner">🎲 You rolled a ' + roll + ' on the D20!</div>';
-        }
+        if (roll === 20) { triggerPigRain(); eggHtml += '<div class="egg-banner">🎲 You rolled a 20! CRITICAL HIT! Pigs Rule Forever!</div>'; }
+        else if (roll === 1) { eggHtml += '<div class="egg-banner">🎲 You rolled a 1... Critical Fail! Tazz Xame stole your dice!</div>'; }
+        else { eggHtml += '<div class="egg-banner">🎲 You rolled a ' + roll + ' on the D20!</div>'; }
       }
-
       const matches = pigDatabase.filter(function(item) {
         const fullText = (item.category + ' ' + item.title + ' ' + item.tags + ' ' + item.snippet).toLowerCase();
         return words.every(function(word) { return fullText.indexOf(word) !== -1; });
       });
-
       let html = eggHtml;
       if (matches.length > 0) {
         matches.forEach(function(item) {
-          html += '<div class="result-card">' +
-                    '<span class="result-badge">' + item.category + '</span>' +
-                    '<div class="result-url">' + item.url + '</div>' +
-                    '<a class="result-title" href="' + item.url + '">' + item.title + '</a>' +
-                    '<p class="result-snippet">' + item.snippet + '</p>' +
-                  '</div>';
+          html += '<div class="result-card"><span class="result-badge">' + item.category + '</span><div class="result-url">' + item.url + '</div><a class="result-title" href="' + item.url + '">' + item.title + '</a><p class="result-snippet">' + item.snippet + '</p></div>';
         });
       } else if (!eggHtml) {
-        html = '<div class="status-msg">' +
-                 '🐷 No built-in cards matched "<strong>' + rawQuery + '</strong>" yet!<br/>' +
-                 '<a class="web-btn" href="https://google.com' + encodeURIComponent(rawQuery) + '">Search the Full Web for "' + rawQuery + '" &rarr;</a>' +
-               '</div>';
+        html = '<div class="status-msg">🐷 No built-in cards matched "<strong>' + rawQuery + '</strong>" yet!<br/><a class="web-btn" href="https://google.com' + encodeURIComponent(rawQuery) + '">Search the Full Web for "' + rawQuery + '" &rarr;</a></div>';
       }
       resultsArea.innerHTML = html;
       return false;
@@ -383,4 +247,3 @@
   </script>
 </body>
 </html>
-      
